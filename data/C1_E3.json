@@ -1,0 +1,176 @@
+{
+  "fondo": "res://assets/backgrounds/Laboratorio.png",
+  "siguiente_escena": "res://data/C1_E4.json",
+  "ocultar_nombre_hasta_id": 0,
+  "dialogos": [
+	{
+	  "id": 1,
+	  "personaje": "Vera",
+	  "expresion": 1,
+	  "texto": "Y acá es donde empezamos a mirar las cosas un poco más de cerca."
+	},
+	{
+	  "id": 2,
+	  "personaje": "Vera",
+	  "expresion": 4,
+	  "texto": "Este es uno de los laboratorios de análisis."
+	},
+	{
+	  "id": 3,
+	  "personaje": "Vera",
+	  "expresion": 0,
+	  "texto": "Encontrar algo es apenas el comienzo. Primero tenemos que saber qué tenemos delante."
+	},
+	{
+	  "id": 4,
+	  "personaje": "Vera",
+	  "expresion": 4,
+	  "texto": "Por ejemplo, este fragmento llegó hace unos días de una expedición."
+	},
+	{
+	  "id": 5,
+	  "personaje": "Vera",
+	  "expresion": 1,
+	  "texto": "A simple vista parece un pedazo de cerámica común, pero el material, la forma y las marcas pueden contarnos mucho más de lo que parece."
+	},
+	{
+	  "id": 6,
+	  "personaje": "Vera",
+	  "expresion": 1,
+	  "texto": "¿Qué te gustaría saber?",
+	  "es_decision": true,
+	  "pista": "¿Qué te gustaría saber?",
+	  "opciones": [
+		{
+		  "texto": "¿Y cómo analizan una pieza así?",
+		  "siguiente_id": 10
+		},
+		{
+		  "texto": "¿Y qué pasa si no le encuentran explicación?",
+		  "siguiente_id": 20
+		},
+		{
+		  "texto": "¿Cómo es el proceso desde que la encuentran?",
+		  "siguiente_id": 30
+		}
+	  ]
+	},
+	{
+	  "id": 10,
+	  "personaje": "Vera",
+	  "expresion": 4,
+	  "texto": "Primero estudiamos el material, la forma y las marcas que tiene. Después comparamos lo que encontramos con otras piezas parecidas."
+	},
+	{
+	  "id": 11,
+	  "personaje": "Vera",
+	  "expresion": 4,
+	  "texto": "Cada detalle puede darnos una pista distinta. A veces, varias pistas juntas nos ayudan a entender cosas que no habríamos descubierto mirando el objeto por encima."
+	},
+	{
+	  "id": 12,
+	  "personaje": "Vera",
+	  "expresion": 0,
+	  "texto": "Claro que también necesitamos saber de dónde salió y qué había a su alrededor. Sin esa información, podemos pasar por alto cosas importantes."
+	},
+	{
+	  "id": 13,
+	  "personaje": "Vera",
+	  "expresion": 0,
+	  "texto": "Y aunque hagamos todo eso, puede que no encontremos una respuesta definitiva."
+	},
+	{
+	  "id": 14,
+	  "personaje": "Vera",
+	  "expresion": 4,
+	  "texto": "Hay que tener paciencia y no inventar explicaciones solo para llenar los huecos.",
+	  "siguiente_id": 40
+	},
+	{
+	  "id": 20,
+	  "personaje": "Vera",
+	  "expresion": 0,
+	  "texto": "Bueno, primero hay que aceptar que todavía no sabemos la respuesta. No podemos inventar una explicación y darla por cierta solo porque nos gustaría resolver el misterio."
+	},
+	{
+	  "id": 21,
+	  "personaje": "Vera",
+	  "expresion": 4,
+	  "texto": "Podemos volver a estudiar la pieza, compararla con otras o revisar los registros de la expedición para ver si se nos pasó algo."
+	},
+	{
+	  "id": 22,
+	  "personaje": "Vera",
+	  "expresion": 4,
+	  "texto": "También importa dónde apareció y qué había cerca. A veces, un detalle del lugar nos ayuda a entender algo que el objeto por sí solo no nos dice."
+	},
+	{
+	  "id": 23,
+	  "personaje": "Vera",
+	  "expresion": 0,
+	  "texto": "Pero puede que ni siquiera así encontremos una respuesta."
+	},
+	{
+	  "id": 24,
+	  "personaje": "Vera",
+	  "expresion": 1,
+	  "texto": "Y no pasa nada. Reconocer lo que todavía no sabemos también es parte de investigar.",
+	  "siguiente_id": 40
+	},
+	{
+	  "id": 30,
+	  "personaje": "Vera",
+	  "expresion": 4,
+	  "texto": "Lo primero es registrar exactamente dónde estaba la pieza y qué había a su alrededor, antes de moverla."
+	},
+	{
+	  "id": 31,
+	  "personaje": "Vera",
+	  "expresion": 0,
+	  "texto": "Eso es importante porque, una vez que la sacamos de ahí, hay detalles del lugar que podemos perder para siempre si no los registramos."
+	},
+	{
+	  "id": 32,
+	  "personaje": "Vera",
+	  "expresion": 4,
+	  "texto": "Después la traemos al laboratorio para estudiar el material, la forma y las marcas que pueda tener."
+	},
+	{
+	  "id": 33,
+	  "personaje": "Vera",
+	  "expresion": 4,
+	  "texto": "También comparamos la pieza con otros hallazgos. Así podemos encontrar semejanzas, diferencias y nuevas pistas."
+	},
+	{
+	  "id": 34,
+	  "personaje": "Vera",
+	  "expresion": 0,
+	  "texto": "A veces esas pistas nos llevan enseguida a una respuesta. Otras veces, nos dejan con más preguntas que al principio. Por eso hay que registrar bien cada paso.",
+	  "siguiente_id": 40
+	},
+	{
+	  "id": 40,
+	  "personaje": "Vera",
+	  "expresion": 4,
+	  "texto": "Por eso trabajamos en equipo. Cada área puede aportar algo que las demás no hayan visto."
+	},
+	{
+	  "id": 41,
+	  "personaje": "Vera",
+	  "expresion": 1,
+	  "texto": "Al juntar toda esa información, vamos armando una idea más completa de lo que pasó."
+	},
+	{
+	  "id": 42,
+	  "personaje": "Vera",
+	  "expresion": 14,
+	  "texto": "Aunque siempre puede quedar algo que todavía no sepamos explicar."
+	},
+	{
+	  "id": 43,
+	  "personaje": "Vera",
+	  "expresion": 1,
+	  "texto": "Bueno, sigamos. Queda un lugar más que quiero que veas."
+	}
+  ]
+}

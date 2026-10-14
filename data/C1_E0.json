@@ -1,0 +1,12 @@
+{
+  "fondo": "res://assets/backgrounds/Dia.png",
+  "siguiente_escena": "res://escenas/C1_E0.tscn",
+  "ocultar_nombre_hasta_id": 0,
+  "dialogos": [
+	{ "id": 1, "personaje": "", "centrado": true, "texto": "AÑO 2076." },
+	{ "id": 2, "personaje": "", "centrado": true, "texto": "Hace unos días recibiste una invitación para incorporarte a CRONOS." },
+	{ "id": 3, "personaje": "", "centrado": true, "texto": "No sabías demasiado sobre el lugar." },
+	{ "id": 4, "personaje": "", "centrado": true, "texto": "Pero decidiste aceptar." },
+	{ "id": 5, "personaje": "", "centrado": true, "texto": "Hoy es tu primer día." }
+  ]
+}

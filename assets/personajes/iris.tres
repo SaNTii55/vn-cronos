@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="CharacterData" format=3 uid="uid://dspygwr302pvm"]
+
+[ext_resource type="Script" uid="uid://cqxwt5usvlyxs" path="res://dialogue/character_data.gd" id="1_thaos"]
+[ext_resource type="Texture2D" uid="uid://dmufnwo737hgq" path="res://assets/personajes/Iris.png" id="2_thaos"]
+
+[resource]
+script = ExtResource("1_thaos")
+nombre = "Iris"
+textura = ExtResource("2_thaos")
+metadata/_custom_type_script = "uid://cqxwt5usvlyxs"

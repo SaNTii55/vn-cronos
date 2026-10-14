@@ -1,0 +1,10 @@
+[gd_scene format=3 uid="uid://dv2uvyw68ym1i"]
+
+[ext_resource type="Script" uid="uid://c6bl0ktyfyfav" path="res://escenas/inicio.gd" id="1_6iy57"]
+[ext_resource type="Texture2D" uid="uid://v2u3in754ush" path="res://assets/backgrounds/Inicio.png" id="2_is37f"]
+
+[node name="Inicio" type="Control" unique_id=110388438]
+layout_mode = 3
+anchors_preset = 0
+script = ExtResource("1_6iy57")
+imagen_fondo = ExtResource("2_is37f")

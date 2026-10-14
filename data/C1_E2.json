@@ -1,0 +1,170 @@
+{
+  "fondo": "res://assets/backgrounds/Investigacion.png",
+  "siguiente_escena": "res://data/C1_E3.json",
+  "ocultar_nombre_hasta_id": 0,
+  "dialogos": [
+	{
+	  "id": 1,
+	  "personaje": "Vera",
+	  "expresion": 1,
+	  "texto": "Bueno, este es uno de los lugares donde probablemente pases bastante tiempo."
+	},
+	{
+	  "id": 2,
+	  "personaje": "Vera",
+	  "expresion": 1,
+	  "texto": "Acá trabaja buena parte del equipo de investigación."
+	},
+	{
+	  "id": 3,
+	  "personaje": "Vera",
+	  "expresion": 4,
+	  "texto": "Hay gente que se dedica a distintas épocas, regiones y tipos de evidencia."
+	},
+	{
+	  "id": 4,
+	  "personaje": "Vera",
+	  "expresion": 1,
+	  "texto": "Pero la idea es bastante simple: tratar de entender qué pasó."
+	},
+	{
+	  "id": 5,
+	  "personaje": "Vera",
+	  "expresion": 1,
+	  "texto": "¿Qué te gustaría saber?",
+	  "es_decision": true,
+	  "pista": "¿Qué te gustaría saber?",
+	  "opciones": [
+		{
+		  "texto": "¿Qué investigan exactamente acá?",
+		  "siguiente_id": 10
+		},
+		{
+		  "texto": "¿Hay mucha gente trabajando en CRONOS?",
+		  "siguiente_id": 20
+		},
+		{
+		  "texto": "¿Y vos qué hacés acá?",
+		  "siguiente_id": 30
+		}
+	  ]
+	},
+	{
+	  "id": 10,
+	  "personaje": "Vera",
+	  "expresion": 0,
+	  "texto": "De todo un poco. Documentos, objetos, fragmentos, restos... Cualquier cosa que nos ayude a entender cómo vivía la gente en su momento."
+	},
+	{
+	  "id": 11,
+	  "personaje": "Vera",
+	  "expresion": 6,
+	  "texto": "A veces, un pedazo de cerámica vieja te dice más de lo que parece."
+	},
+	{
+	  "id": 12,
+	  "personaje": "Vera",
+	  "expresion": 4,
+	  "texto": "Para estudiar todo eso, hay gente que se especializa en distintos tipos de hallazgos."
+	},
+	{
+	  "id": 13,
+	  "personaje": "Vera",
+	  "expresion": 1,
+	  "texto": "Yo me encargo de ir conectando la información y también acompaño expediciones al campo cuando hace falta."
+	},
+	{
+	  "id": 14,
+	  "personaje": "Vera",
+	  "expresion": 1,
+	  "texto": "Al final, cada parte del trabajo aporta algo distinto.",
+	  "siguiente_id": 40
+	},
+	{
+	  "id": 20,
+	  "personaje": "Vera",
+	  "expresion": 1,
+	  "texto": "Bastante más de la que parece a simple vista."
+	},
+	{
+	  "id": 21,
+	  "personaje": "Vera",
+	  "expresion": 4,
+	  "texto": "Hay gente en los laboratorios, en los archivos y equipos que se especializan en distintos tipos de hallazgos."
+	},
+	{
+	  "id": 22,
+	  "personaje": "Vera",
+	  "expresion": 4,
+	  "texto": "Algunos trabajan con documentos, otros analizan objetos y otros salen al campo a buscar material."
+	},
+	{
+	  "id": 23,
+	  "personaje": "Vera",
+	  "expresion": 4,
+	  "texto": "Yo ayudo a conectar el trabajo de todos. Si cada equipo trabajara por su cuenta, nos perderíamos un montón de información.",
+	  "siguiente_id": 40
+	},
+	{
+	  "id": 30,
+	  "personaje": "Vera",
+	  "expresion": 5,
+	  "texto": "¿Yo?"
+	},
+	{
+	  "id": 31,
+	  "personaje": "Vera",
+	  "expresion": 1,
+	  "texto": "Un poco de todo, depende del día. Reviso información, analizo hallazgos y acompaño expediciones al campo cuando hace falta."
+	},
+	{
+	  "id": 32,
+	  "personaje": "Vera",
+	  "expresion": 4,
+	  "texto": "Digamos que conecto lo que encontramos afuera con lo que estudiamos acá adentro."
+	},
+	{
+	  "id": 33,
+	  "personaje": "Vera",
+	  "expresion": 4,
+	  "texto": "Para eso trabajo con gente que estudia distintas cosas, desde documentos antiguos hasta objetos de uso cotidiano."
+	},
+	{
+	  "id": 34,
+	  "personaje": "Vera",
+	  "expresion": 1,
+	  "texto": "Cada uno aporta algo distinto, y mi trabajo también consiste en relacionar esas partes.",
+	  "siguiente_id": 40
+	},
+	{
+	  "id": 40,
+	  "personaje": "Vera",
+	  "expresion": 14,
+	  "texto": "Hay algo que sí quiero que tengas presente."
+	},
+	{
+	  "id": 41,
+	  "personaje": "Vera",
+	  "expresion": 4,
+	  "texto": "Acá no guardamos cosas antiguas porque sí, sino porque pueden contarnos algo."
+	},
+	{
+	  "id": 42,
+	  "personaje": "Vera",
+	  "expresion": 14,
+	  "texto": "Pero las cosas no vienen con un cartel que diga qué significan."
+	},
+	{
+	  "id": 43,
+	  "personaje": "Vera",
+	  "expresion": 4,
+	  "texto": "Tenemos que averiguarlo."
+	},
+	{
+	  "id": 44,
+	  "personaje": "Vera",
+	  "expresion": 1,
+	  "texto": "Bueno, vení. Hay otro sector que tenés que conocer."
+	}
+  ]
+}

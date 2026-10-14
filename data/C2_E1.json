@@ -1,0 +1,134 @@
+{
+	"fondo": "res://assets/backgrounds/Despacho.png",
+	"siguiente_escena": "res://data/C2_E2.json",
+	"ocultar_nombre_hasta_id": 0,
+	"dialogos": [
+		{
+			"id": 1,
+			"personaje": "Vera",
+			"expresion": 1,
+			"texto": "¡Mirá quién apareció!"
+		},
+		{
+			"id": 2,
+			"personaje": "Vera",
+			"expresion": 3,
+			"texto": "Anoche me quedé trabajando hasta tarde, así que todavía estoy arrancando."
+		},
+		{
+			"id": 3,
+			"personaje": "Vera",
+			"expresion": 6,
+			"texto": "Y, no te voy a mentir, no estaba segura de que fueras a volver."
+		},
+		{
+			"id": 4,
+			"personaje": "Vera",
+			"expresion": 1,
+			"texto": "Pero bueno, acá estás.",
+			"es_decision": true,
+			"pista": "",
+			"opciones": [
+				{
+					"texto": "¿Tan malo fue mi primer día?",
+					"siguiente_id": 10
+				},
+				{
+					"texto": "¿No pudiste dormir anoche?",
+					"siguiente_id": 20
+				},
+				{
+					"texto": "¿Qué hacemos hoy?",
+					"siguiente_id": 30
+				}
+			]
+		},
+		{
+			"id": 10,
+			"personaje": "Vera",
+			"expresion": 5,
+			"texto": "¡No, tampoco dije eso!"
+		},
+		{
+			"id": 11,
+			"personaje": "Vera",
+			"expresion": 4,
+			"texto": "Es mucha información para un solo día, nada más. Hay mucho para procesar."
+		},
+		{
+			"id": 12,
+			"personaje": "Vera",
+			"expresion": 2,
+			"texto": "Aunque, por lo visto, no te llevaste una impresión tan mala.",
+			"siguiente_id": 40
+		},
+		{
+			"id": 20,
+			"personaje": "Vera",
+			"expresion": 0,
+			"texto": "Dormir, dormí. El problema es que cuando me engancho con algo, me cuesta soltarlo."
+		},
+		{
+			"id": 21,
+			"personaje": "Vera",
+			"expresion": 14,
+			"texto": "Me quedé con una de las piezas que te mostré ayer dándome vueltas en la cabeza."
+		},
+		{
+			"id": 22,
+			"personaje": "Vera",
+			"expresion": 2,
+			"texto": "Ya estoy acostumbrada. Hoy me vas a ver tomando bastante café.",
+			"siguiente_id": 40
+		},
+		{
+			"id": 30,
+			"personaje": "Vera",
+			"expresion": 2,
+			"texto": "Mirá vos, directo al grano. Me gusta."
+		},
+		{
+			"id": 31,
+			"personaje": "Vera",
+			"expresion": 4,
+			"texto": "Ayer te mostré dónde trabajamos. Hoy toca mostrarte qué hacemos realmente."
+		},
+		{
+			"id": 32,
+			"personaje": "Vera",
+			"expresion": 1,
+			"texto": "Y creo que eso te va a dar una idea mucho más clara de para qué estás acá.",
+			"siguiente_id": 40
+		},
+		{
+			"id": 40,
+			"personaje": "Vera",
+			"expresion": 10,
+			"texto": "Igual, me alegro de que hayas vuelto."
+		},
+		{
+			"id": 41,
+			"personaje": "Vera",
+			"expresion": 0,
+			"texto": "Ya nos pasó con otras personas que no siguieron después de conocer el lugar."
+		},
+		{
+			"id": 42,
+			"personaje": "Vera",
+			"expresion": 0,
+			"texto": "Algunas no le encontraban la vuelta; otras buscaban algo distinto."
+		},
+		{
+			"id": 43,
+			"personaje": "Vera",
+			"expresion": 14,
+			"texto": "Supongo que no es un trabajo para cualquiera."
+		},
+		{
+			"id": 44,
+			"personaje": "Vera",
+			"expresion": 1,
+			"texto": "Bueno, basta de charla. Vení al laboratorio, tengo algo para mostrarte."
+		}
+	]
+}

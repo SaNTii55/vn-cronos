@@ -1,0 +1,12 @@
+[gd_scene format=3 uid="uid://b547c2pfyx23n"]
+
+[ext_resource type="Script" uid="uid://cm1tcpgq87fww" path="res://main.gd" id="1_ig7tw"]
+[ext_resource type="Script" uid="uid://cuhanpcretd18" path="res://dialogue/dialogue_box.gd" id="2_0xm2m"]
+
+[node name="Main" type="Node" unique_id=2041872303]
+script = ExtResource("1_ig7tw")
+
+[node name="CajaDialogo" type="PanelContainer" parent="." unique_id=603995402]
+offset_right = 40.0
+offset_bottom = 40.0
+script = ExtResource("2_0xm2m")

@@ -1,0 +1,218 @@
+
+{
+	"muestras": 3,
+	"laboratorio_guiado": true,
+
+	"id": "hueso_vaca",
+	"nombre": "Hueso de vaca joven",
+	"imagen": "res://assets/evidencias/hueso_radio.png",
+
+	"ficha": {
+		"que_es": "Fragmentos de hueso de ganado vacuno hallados en un basural del asentamiento junto a las pirámides de Giza.",
+		"sabemos": [
+			{
+				"texto": "Es hueso de vaca (ganado vacuno).",
+				"requiere": "composicion"
+			},
+			{
+				"texto": "Perteneció a un animal joven, no adulto.",
+				"requiere": "composicion"
+			},
+			{
+				"texto": "Casi todos los fragmentos son de la pata trasera.",
+				"requiere": "reconstruccion"
+			}
+		],
+		"no_sabemos": [
+			"Por qué faltan casi todas las patas delanteras.",
+			"Qué estatus legal tenían las personas que comieron esta carne."
+		],
+		"nota_historica": "En el basural conocido como Pottery Mound predominan huesos de ganado vacuno joven y los de pata trasera superan a los de pata delantera. El arqueozoólogo Richard Redding propuso que las patas delanteras podían separarse como ofrenda. Es una interpretación de los restos, no un hecho demostrado directamente por los huesos."
+	},
+
+	"afirmaciones": [
+		{
+			"texto": "Es hueso de vaca (ganado vacuno).",
+			"correcta": "hecho",
+			"requiere": "composicion",
+			"explicacion": "El perfil comparativo de la huella de colágeno coincide mejor con la referencia de ganado vacuno."
+		},
+		{
+			"texto": "El animal era joven, no adulto.",
+			"correcta": "hecho",
+			"requiere": "composicion",
+			"explicacion": "El análisis didáctico del desarrollo óseo apunta a un animal joven. En una investigación real, la estimación dependería también de otros indicadores."
+		},
+		{
+			"texto": "Casi todos los fragmentos son de la pata trasera.",
+			"correcta": "hecho",
+			"requiere": "reconstruccion",
+			"explicacion": "Al organizar los fragmentos se observa que predominan los correspondientes a la pata trasera."
+		},
+		{
+			"texto": "Las patas delanteras se separaban para usarlas como ofrenda.",
+			"correcta": "hipotesis",
+			"requiere": "reconstruccion",
+			"explicacion": "Es una interpretación posible de la distribución de los restos, pero los huesos no demuestran por sí solos por qué faltan esas partes."
+		},
+		{
+			"texto": "Quienes comieron esta carne eran trabajadores libres, no esclavos.",
+			"correcta": "desconocido",
+			"requiere": "",
+			"explicacion": "Los restos pueden aportar información sobre la alimentación y el abastecimiento, pero no determinan por sí solos el estatus legal de quienes comieron la carne."
+		}
+	],
+
+	"analisis": {
+		"reconstruccion": {
+			"util": true,
+			"titulo": "Mesa de reconstrucción",
+			"instruccion": "Arrastrá cada fragmento a su lugar sobre la silueta. Clic derecho para girarlo.",
+			"imagen": "res://assets/evidencias/hueso_radio.png",
+			"mapa": "res://assets/evidencias/hueso_radio_mapa.png",
+	"lectura": ["Es un radio con su ulna."]
+}
+		},
+
+		"composicion": {
+			"util": true,
+			"titulo": "Analizador de material",
+			"rondas": [
+				{
+					"pregunta": "Compará la huella de colágeno de la muestra con los perfiles de referencia. ¿A qué animal se aproxima más?",
+					"etiquetas": [
+						"1192",
+						"1196",
+						"1550",
+						"1580",
+						"2853"
+					],
+					"muestra": [
+						85,
+						8,
+						4,
+						78,
+						92
+					],
+					"opciones": [
+						{
+							"nombre": "Vaca (bovino)",
+							"valores": [
+								100,
+								0,
+								0,
+								100,
+								100
+							],
+							"dato": "El perfil didáctico de la muestra se aproxima más a la referencia de ganado vacuno."
+						},
+						{
+							"nombre": "Oveja o cabra",
+							"valores": [
+								0,
+								100,
+								0,
+								100,
+								0
+							],
+							"dato": ""
+						},
+						{
+							"nombre": "Cerdo",
+							"valores": [
+								0,
+								100,
+								100,
+								0,
+								0
+							],
+							"dato": ""
+						}
+					],
+					"correcta": 0
+				},
+				{
+					"pregunta": "Compará los indicadores simplificados de desarrollo óseo. ¿Qué perfil de madurez se aproxima más al de la muestra?",
+					"etiquetas": [
+						"CII",
+						"AGR",
+						"OSC",
+						"Ca",
+						"P"
+					],
+					"muestra": [
+						60,
+						55,
+						70,
+						60,
+						48
+					],
+					"opciones": [
+						{
+							"nombre": "Cría",
+							"valores": [
+								90,
+								85,
+								20,
+								15,
+								15
+							],
+							"dato": ""
+						},
+						{
+							"nombre": "Joven / subadulto",
+							"valores": [
+								65,
+								60,
+								65,
+								55,
+								50
+							],
+							"dato": "El perfil ilustrativo se aproxima al de un animal joven. En un análisis real, la edad se estimaría con métodos e indicadores apropiados y evidencia adicional."
+						},
+						{
+							"nombre": "Adulto",
+							"valores": [
+								15,
+								15,
+								45,
+								90,
+								85
+							],
+							"dato": ""
+						}
+					],
+					"correcta": 1
+				}
+			]
+		},
+
+		"microscopio": {
+			"util": false,
+			"titulo": "Microscopio",
+			"instruccion": "Mové la lupa sobre el hueso y hacé clic en lo que encuentres.",
+			"imagen": "res://assets/evidencias/hueso_radio.png",
+			"minimo": 2,
+			"rasgos": [
+				{
+					"nombre": "Marcas de corte",
+					"pos": [0.30, 0.42],
+					"radio": 0.07,
+					"dato": "Hay marcas finas compatibles con el uso de una herramienta afilada. Su interpretación depende del contexto y de descartar otras causas."
+				},
+				{
+					"nombre": "Estrías",
+					"pos": [0.68, 0.60],
+					"radio": 0.07,
+					"dato": "La superficie presenta estrías. Para interpretarlas habría que examinar su forma y distribución."
+				},
+				{
+					"nombre": "Zona pulida",
+					"pos": [0.50, 0.22],
+					"radio": 0.07,
+					"dato": "Hay una zona pulida que podría deberse a manipulación o desgaste."
+				}
+			],
+			"conclusion": "Las marcas superficiales necesitan interpretarse en contexto. Por sí solas no identifican quién manipuló el hueso ni cuál era su estatus social."
+		}
+	}

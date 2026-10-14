@@ -1,0 +1,322 @@
+{
+	"fondo": "res://assets/backgrounds/Archivo.png",
+	"siguiente_escena": "res://data/C1_E5.json",
+	"ocultar_nombre_hasta_id": 0,
+	"dialogos": [
+		{
+			"id": 1,
+			"personaje": "Vera",
+			"expresion": 1,
+			"texto": "Bueno. Este es uno de los lugares más importantes de CRONOS."
+		},
+		{
+			"id": 2,
+			"personaje": "Vera",
+			"expresion": 4,
+			"texto": "El Archivo Central."
+		},
+		{
+			"id": 3,
+			"personaje": "Vera",
+			"expresion": 4,
+			"texto": "Acá termina buena parte de lo que investigamos, analizamos y registramos."
+		},
+		{
+			"id": 4,
+			"personaje": "Vera",
+			"expresion": 1,
+			"texto": "Son muchos años de información acumulada."
+		},
+		{
+			"id": 5,
+			"personaje": "Vera",
+			"expresion": 2,
+			"texto": "Y, por suerte, no tenemos que ordenar todo esto a mano."
+		},
+		{
+			"id": 6,
+			"personaje": "Vera",
+			"expresion": 4,
+			"texto": "Este es ARCHIV."
+		},
+		{
+			"id": 7,
+			"personaje": "ARCHIV",
+			"expresion": 3,
+			"texto": "Buenas, Vera. Y bienvenido, {nombre}."
+		},
+		{
+			"id": 8,
+			"personaje": "ARCHIV",
+			"expresion": 6,
+			"texto": "Tu ingreso ya figura en los registros."
+		},
+		{
+			"id": 9,
+			"personaje": "Vera",
+			"expresion": 5,
+			"texto": "¿Ya lo sabías?"
+		},
+		{
+			"id": 10,
+			"personaje": "ARCHIV",
+			"expresion": 7,
+			"texto": "El sistema registra cada nuevo ingreso autorizado de forma instantánea."
+		},
+		{
+			"id": 11,
+			"personaje": "Vera",
+			"expresion": 1,
+			"texto": "Claro. Como decía, este es ARCHIV."
+		},
+		{
+			"id": 12,
+			"personaje": "ARCHIV",
+			"expresion": 2,
+			"texto": "Mi designación oficial es ARCHIV: Algoritmo de Reconstrucción Cronológica Histórica e Interpretación Virtual."
+		},
+		{
+			"id": 13,
+			"personaje": "Vera",
+			"expresion": 2,
+			"texto": "Dejémoslo en ARCHIV y listo."
+		},
+		{
+			"id": 14,
+			"personaje": "ARCHIV",
+			"expresion": 8,
+			"texto": "Eso omite información relevante."
+		},
+		{
+			"id": 15,
+			"personaje": "Vera",
+			"expresion": 2,
+			"texto": "Sí, bueno. Esa es la intención."
+		},
+		{
+			"id": 16,
+			"personaje": "ARCHIV",
+			"expresion": 6,
+			"texto": "Entendido. Utilizaré la denominación abreviada."
+		},
+		{
+			"id": 17,
+			"personaje": "Vera",
+			"expresion": 1,
+			"texto": "En fin... ¿querés preguntarle algo antes de seguir?",
+			"es_decision": true,
+			"foco_opciones": "ARCHIV",
+			"expresion_foco": 1,
+			"pista": "¿Qué te gustaría preguntarle?",
+			"opciones": [
+				{
+					"texto": "¿Tenés acceso a todo lo que hay acá?",
+					"siguiente_id": 20
+				},
+				{
+					"texto": "¿Cómo hacés para ordenar tanta información?",
+					"siguiente_id": 30
+				},
+				{
+					"texto": "¿Cómo encontrás conexiones entre cosas tan distintas?",
+					"siguiente_id": 40
+				}
+			]
+		},
+		{
+			"id": 20,
+			"personaje": "ARCHIV",
+			"expresion": 2,
+			"texto": "Tengo acceso a los registros incorporados al sistema: documentos, análisis, informes y datos de las expediciones."
+		},
+		{
+			"id": 21,
+			"personaje": "Vera",
+			"expresion": 4,
+			"texto": "Ahí tenés años de investigación reunidos en un mismo lugar. Y podés consultar toda esa información sin tener que revisar cada archivo por separado."
+		},
+		{
+			"id": 22,
+			"personaje": "ARCHIV",
+			"expresion": 2,
+			"texto": "Los registros están vinculados entre sí, lo que permite recuperar información relacionada con una consulta."
+		},
+		{
+			"id": 23,
+			"personaje": "Vera",
+			"expresion": 4,
+			"texto": "En otras palabras, podés encontrar un informe y también ver con qué otros documentos se relaciona."
+		},
+		{
+			"id": 24,
+			"personaje": "ARCHIV",
+			"expresion": 11,
+			"texto": "Correcto. Sin embargo, mi acceso se limita a la información que ha sido incorporada al sistema."
+		},
+		{
+			"id": 25,
+			"personaje": "Vera",
+			"expresion": 4,
+			"texto": "Así que, si durante una expedición alguien se olvida de registrar algo, no vas a poder recuperarlo después como si nada."
+		},
+		{
+			"id": 26,
+			"personaje": "ARCHIV",
+			"expresion": 5,
+			"texto": "La información ausente puede limitar las conclusiones que se obtengan a partir de los registros disponibles."
+		},
+		{
+			"id": 27,
+			"personaje": "Vera",
+			"expresion": 1,
+			"texto": "Por eso es importante registrar bien los hallazgos desde el principio. No alcanza con encontrar algo: también tenemos que dejar constancia de lo que sabemos sobre ello.",
+			"siguiente_id": 50
+		},
+		{
+			"id": 30,
+			"personaje": "ARCHIV",
+			"expresion": 2,
+			"texto": "Utilizo categorías, índices cruzados y relaciones entre los registros. Así puedo localizar documentos específicos sin revisar cada archivo por separado."
+		},
+		{
+			"id": 31,
+			"personaje": "Vera",
+			"expresion": 4,
+			"texto": "En otras palabras, podés encontrar en segundos documentos que a nosotros nos llevaría horas localizar."
+		},
+		{
+			"id": 32,
+			"personaje": "ARCHIV",
+			"expresion": 8,
+			"texto": "En determinados casos, semanas."
+		},
+		{
+			"id": 33,
+			"personaje": "Vera",
+			"expresion": 2,
+			"texto": "Bueno, ahí tenés. Si alguna vez necesitás encontrar algo entre todos estos registros, ya sabés a quién recurrir."
+		},
+		{
+			"id": 34,
+			"personaje": "ARCHIV",
+			"expresion": 5,
+			"texto": "También puedo identificar relaciones entre registros que no resultan evidentes al examinarlos de forma aislada."
+		},
+		{
+			"id": 35,
+			"personaje": "Vera",
+			"expresion": 4,
+			"texto": "Eso significa que no tenés que saber de antemano en qué documento está todo. Podés empezar por una consulta y seguir las pistas que aparecen en otros registros."
+		},
+		{
+			"id": 36,
+			"personaje": "ARCHIV",
+			"expresion": 2,
+			"texto": "La búsqueda puede ampliarse a partir de la información relacionada que se encuentre disponible."
+		},
+		{
+			"id": 37,
+			"personaje": "Vera",
+			"expresion": 1,
+			"texto": "Aunque encontrar documentos relacionados no significa que ya tengas todas las respuestas. Después hay que estudiar qué nos dicen y por qué están relacionados.",
+			"siguiente_id": 50
+		},
+		{
+			"id": 40,
+			"personaje": "ARCHIV",
+			"expresion": 5,
+			"texto": "Comparo la información disponible en distintos registros e identifico coincidencias, diferencias y posibles relaciones entre sus contenidos."
+		},
+		{
+			"id": 41,
+			"personaje": "Vera",
+			"expresion": 4,
+			"texto": "Por ejemplo, podés relacionar un objeto encontrado en una expedición con un documento que ya teníamos guardado."
+		},
+		{
+			"id": 42,
+			"personaje": "ARCHIV",
+			"expresion": 2,
+			"texto": "También puedo detectar coincidencias entre registros correspondientes a lugares o períodos diferentes."
+		},
+		{
+			"id": 43,
+			"personaje": "Vera",
+			"expresion": 1,
+			"texto": "Eso te permite encontrar pistas que quizá pasarían desapercibidas si estudiáramos cada hallazgo por separado."
+		},
+		{
+			"id": 44,
+			"personaje": "ARCHIV",
+			"expresion": 2,
+			"texto": "Las relaciones identificadas pueden aportar nuevas pistas para una investigación."
+		},
+		{
+			"id": 45,
+			"personaje": "Vera",
+			"expresion": 14,
+			"texto": "Pero una conexión no siempre significa que dos cosas estén relacionadas de la manera que imaginamos. Es una pista que tenemos que investigar."
+		},
+		{
+			"id": 46,
+			"personaje": "ARCHIV",
+			"expresion": 5,
+			"texto": "La relación identificada puede servir como punto de partida para una investigación adicional."
+		},
+		{
+			"id": 47,
+			"personaje": "Vera",
+			"expresion": 1,
+			"texto": "Exactamente. Podés ayudarnos a descubrir por dónde seguir, pero todavía tenemos que averiguar qué significan esas conexiones.",
+			"siguiente_id": 50
+		},
+		{
+			"id": 50,
+			"personaje": "Vera",
+			"expresion": 1,
+			"texto": "Bueno, como ves, ARCHIV puede ser bastante útil."
+		},
+		{
+			"id": 51,
+			"personaje": "Vera",
+			"expresion": 4,
+			"texto": "Tiene muchísima información organizada y puede ayudarte a encontrar conexiones que, de otra manera, tardarías un montón en descubrir."
+		},
+		{
+			"id": 52,
+			"personaje": "ARCHIV",
+			"expresion": 3,
+			"texto": "Mi función es facilitar el acceso a la información y contribuir al trabajo del equipo."
+		},
+		{
+			"id": 53,
+			"personaje": "Vera",
+			"expresion": 1,
+			"texto": "Cuando empieces a trabajar con los registros y los hallazgos de las expediciones, vas a usarlo bastante."
+		},
+		{
+			"id": 54,
+			"personaje": "Vera",
+			"expresion": 4,
+			"texto": "Eso sí, tener tanta información a mano no significa que podamos dejar de investigar."
+		},
+		{
+			"id": 55,
+			"personaje": "ARCHIV",
+			"expresion": 11,
+			"texto": "El acceso a la información facilita el trabajo de investigación, pero no sustituye todas las tareas del equipo."
+		},
+		{
+			"id": 56,
+			"personaje": "Vera",
+			"expresion": 1,
+			"texto": "Exactamente. Bueno, ya vimos bastante por hoy."
+		},
+		{
+			"id": 57,
+			"personaje": "Vera",
+			"expresion": 1,
+			"texto": "Vamos volviendo."
+		}
+	]
+}

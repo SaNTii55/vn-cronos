@@ -1,0 +1,9 @@
+{
+	"dialogos": [
+		{ "id": 1, "personaje": "Iris", "expresion": 1, "lado": "izquierda", "texto": "Bien, ahora que tenemos el hueso reconstruido, podemos averiguar algo más sobre su origen." },
+		{ "id": 2, "personaje": "Iris", "expresion": 4, "texto": "Este terminal compara las señales obtenidas de la muestra con perfiles de referencia almacenados en CRONOS." },
+		{ "id": 3, "personaje": "Iris", "expresion": 4, "texto": "Primero vamos a intentar identificar la especie. Los perfiles no tienen que coincidir exactamente; lo importante es encontrar el que más se aproxime al conjunto de resultados." },
+		{ "id": 4, "personaje": "Iris", "expresion": 14, "texto": "Después haremos una segunda comparación para estimar la etapa de desarrollo del animal." },
+		{ "id": 5, "personaje": "Iris", "expresion": 1, "texto": "Vamos por partes. Empecemos con la especie." }
+	]
+}

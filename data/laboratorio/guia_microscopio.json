@@ -1,0 +1,11 @@
+{
+	"dialogos": [
+		{ "id": 1, "personaje": "Iris", "expresion": 1, "lado": "izquierda", "texto": "Ya sabemos de qué animal procede el hueso y tenemos una estimación de su etapa de desarrollo." },
+		{ "id": 2, "personaje": "Iris", "expresion": 14, "texto": "Pero todavía no sabemos qué ocurrió con él." },
+		{ "id": 3, "personaje": "Iris", "expresion": 4, "texto": "Para eso vamos a observar su superficie con más detalle." },
+		{ "id": 4, "personaje": "Iris", "expresion": 4, "texto": "Algunas marcas pueden darnos pistas sobre cómo fue tratado el hueso. Otras pueden deberse a procesos naturales o a alteraciones posteriores." },
+		{ "id": 5, "personaje": "Iris", "expresion": 4, "texto": "Tu tarea es localizar las marcas y compararlas con los ejemplos de referencia." },
+		{ "id": 6, "personaje": "Iris", "expresion": 0, "texto": "Recordá que una marca puede orientarnos, pero no siempre nos dice exactamente qué ocurrió." },
+		{ "id": 7, "personaje": "Iris", "expresion": 1, "texto": "Veamos qué encontramos." }
+	]
+}

@@ -1,0 +1,44 @@
+{
+  "fondo": "res://assets/backgrounds/Despacho.png",
+  "siguiente_escena": "res://data/C2_E0.json",
+  "ocultar_nombre_hasta_id": 0,
+  "dialogos": [
+	{
+	  "id": 1,
+	  "personaje": "Vera",
+	  "expresion": 0,
+	  "texto": "Bueno, me parece que fue suficiente información nueva por hoy."
+	},
+	{
+	  "id": 2,
+	  "personaje": "Vera",
+	  "expresion": 1,
+	  "texto": "Quizás todavía no te quede del todo claro qué vas a hacer."
+	},
+	{
+	  "id": 3,
+	  "personaje": "Vera",
+	  "expresion": 1,
+	  "texto": "Pero si hay algo que tenemos en CRONOS, es tiempo."
+	},
+	{
+	  "id": 4,
+	  "personaje": "Vera",
+	  "expresion": 0,
+	  "texto": "Lo mejor por hoy es que te vayas a descansar."
+	},
+	{
+	  "id": 5,
+	  "personaje": "Vera",
+	  "expresion": 5,
+	  "texto": "Espero que todo esto no te haya asustado como para no volver."
+	},
+	{
+	  "id": 6,
+	  "personaje": "Vera",
+	  "expresion": 2,
+	  "texto": "Bueno, ¡nos vemos mañana! Y tratá de no llegar tarde.",
+	  "fin_de_dia": true
+	}
+  ]
+}

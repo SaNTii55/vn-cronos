@@ -1,0 +1,26 @@
+[gd_scene format=3 uid="uid://b547c2pfyx23n"]
+
+[ext_resource type="Script" uid="uid://cm1tcpgq87fww" path="res://main.gd" id="1_ig7tw"]
+[ext_resource type="Script" uid="uid://cuhanpcretd18" path="res://dialogue/dialogue_box.gd" id="2_0xm2m"]
+[ext_resource type="Script" uid="uid://go21ftoyw0we" path="res://dialogue/character_stage.gd" id="2_h2yge"]
+[ext_resource type="Script" uid="uid://crt8ch33mvxwb" path="res://dialogue/choice_menu.gd" id="4_1bvp3"]
+
+[node name="Main" type="Node" unique_id=2041872303]
+script = ExtResource("1_ig7tw")
+
+[node name="Escenario" type="Control" parent="." unique_id=1894898247]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+script = ExtResource("2_h2yge")
+
+[node name="CajaDialogo" type="PanelContainer" parent="." unique_id=603995402]
+offset_right = 40.0
+offset_bottom = 40.0
+script = ExtResource("2_0xm2m")
+
+[node name="MenuOpciones" type="PanelContainer" parent="." unique_id=865465005]
+offset_right = 40.0
+offset_bottom = 40.0
+script = ExtResource("4_1bvp3")
