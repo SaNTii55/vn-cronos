@@ -9,43 +9,60 @@ extends MinijuegoBase
 
 const ANCHO_VISOR := 1100.0
 const ALTO_VISOR := 600.0
-const RADIO_LUPA := 150.0
+const RADIO_LUPA := 112.0
+const MAGNIFICACION := 2.0
 
 const SHADER := """
 shader_type canvas_item;
 uniform vec2 centro_px = vec2(-1000.0, -1000.0);
 uniform vec2 tamano_px = vec2(1.0, 1.0);
-uniform float radio_px = 150.0;
+uniform float radio_px = 112.0;
 uniform float suavidad_px = 24.0;
+uniform float magnificacion = 2.0;
+uniform sampler2D textura_marcas : source_color;
+uniform bool usar_marcas = false;
 void fragment() {
-	vec4 c = texture(TEXTURE, UV);
 	float d = distance(UV * tamano_px, centro_px);
-	float k = smoothstep(radio_px, radio_px - suavidad_px, d);
-	float gris = dot(c.rgb, vec3(0.299, 0.587, 0.114));
-	vec3 fuera = vec3(gris) * 0.16;
-	COLOR = vec4(mix(fuera, c.rgb, k), c.a);
+	float k = 1.0 - smoothstep(radio_px - suavidad_px, radio_px, d);
+	vec2 centro_uv = centro_px / tamano_px;
+	vec2 uv_ampliado = clamp(centro_uv + (UV - centro_uv) / magnificacion, vec2(0.0), vec2(1.0));
+	vec4 original = texture(TEXTURE, UV);
+	vec4 ampliada = texture(TEXTURE, uv_ampliado);
+	vec4 marcas = texture(textura_marcas, uv_ampliado);
+	vec4 dentro = ampliada;
+	if (usar_marcas) {
+		dentro.rgb = mix(dentro.rgb, marcas.rgb, marcas.a);
+		dentro.a = max(dentro.a, marcas.a);
+	}
+	vec3 fuera = original.rgb * 0.6;
+	vec3 rgb = mix(fuera, dentro.rgb, k);
+	float alfa = mix(original.a, dentro.a, k);
+	COLOR = vec4(rgb, alfa);
 }
 """
 
 
 class Visor extends TextureRect:
 	signal clic_en(pos_px: Vector2)
-	var radio_lupa: float = 150.0
+	var radio_lupa: float = 112.0
 	var marcas: Array = []
 	var _mouse: Vector2 = Vector2(-1000, -1000)
 	var _mat: ShaderMaterial
 
-	func preparar(codigo: String, radio: float) -> void:
+	func preparar(codigo: String, radio: float, zoom: float, imagen_marcas: Texture2D) -> void:
 		radio_lupa = radio
 		var sh := Shader.new()
 		sh.code = codigo
 		_mat = ShaderMaterial.new()
 		_mat.shader = sh
 		_mat.set_shader_parameter("radio_px", radio)
+		_mat.set_shader_parameter("magnificacion", zoom)
+		_mat.set_shader_parameter("textura_marcas", imagen_marcas if imagen_marcas != null else texture)
+		_mat.set_shader_parameter("usar_marcas", imagen_marcas != null)
 		material = _mat
 		expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 		stretch_mode = TextureRect.STRETCH_SCALE
-		texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
+		texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR
 		mouse_filter = Control.MOUSE_FILTER_STOP
 		mouse_default_cursor_shape = Control.CURSOR_CROSS
 		resized.connect(_al_cambiar_tamano)
@@ -90,13 +107,14 @@ func _construir() -> void:
 	var tex: Texture2D = cargar_textura(str(datos.get("imagen", "")))
 	if tex == null:
 		tex = textura_provisoria(1100, 640)
+	var tex_marcas: Texture2D = cargar_textura(str(datos.get("imagen_marcas", "")))
 
 	var centro := CenterContainer.new()
 	centro.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	caja.add_child(centro)
 	_visor = Visor.new()
-	_visor.preparar(SHADER, RADIO_LUPA)   # antes que el tamaño y la textura
 	_visor.texture = tex
+	_visor.preparar(SHADER, RADIO_LUPA, MAGNIFICACION, tex_marcas)
 	_visor.custom_minimum_size = Vector2(ANCHO_VISOR, ALTO_VISOR)
 	_visor.size = Vector2(ANCHO_VISOR, ALTO_VISOR)
 	_visor.clic_en.connect(_on_clic)

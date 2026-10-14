@@ -70,8 +70,7 @@
 			"instruccion": "Arrastrá cada fragmento a su lugar sobre la silueta. Clic derecho para girarlo.",
 			"imagen": "res://assets/evidencias/hueso_radio.png",
 			"mapa": "res://assets/evidencias/hueso_radio_mapa.png",
-	"lectura": ["Es un radio con su ulna."]
-}
+			"lectura": ["Es un radio con su ulna."]
 		},
 
 		"composicion": {
@@ -192,27 +191,29 @@
 			"titulo": "Microscopio",
 			"instruccion": "Mové la lupa sobre el hueso y hacé clic en lo que encuentres.",
 			"imagen": "res://assets/evidencias/hueso_radio.png",
+			"imagen_marcas": "res://assets/evidencias/hueso_radio_marcas.png",
 			"minimo": 2,
 			"rasgos": [
 				{
 					"nombre": "Marcas de corte",
-					"pos": [0.30, 0.42],
-					"radio": 0.07,
+					"pos": [0.20, 0.19],
+					"radio": 0.06,
 					"dato": "Hay marcas finas compatibles con el uso de una herramienta afilada. Su interpretación depende del contexto y de descartar otras causas."
 				},
 				{
 					"nombre": "Estrías",
-					"pos": [0.68, 0.60],
-					"radio": 0.07,
+					"pos": [0.79, 0.72],
+					"radio": 0.08,
 					"dato": "La superficie presenta estrías. Para interpretarlas habría que examinar su forma y distribución."
 				},
 				{
 					"nombre": "Zona pulida",
-					"pos": [0.50, 0.22],
-					"radio": 0.07,
+					"pos": [0.30, 0.38],
+					"radio": 0.06,
 					"dato": "Hay una zona pulida que podría deberse a manipulación o desgaste."
 				}
 			],
 			"conclusion": "Las marcas superficiales necesitan interpretarse en contexto. Por sí solas no identifican quién manipuló el hueso ni cuál era su estatus social."
 		}
 	}
+}

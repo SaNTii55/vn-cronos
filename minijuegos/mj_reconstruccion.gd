@@ -155,7 +155,7 @@ func _preparar_tablero() -> void:
 	var tablero: Vector2 = _area.size
 	_agregar_fondo(tablero)
 
-	# Silueta tenue del hueso entero, en el centro.
+	# Silueta opaca negra del hueso entero, en el centro.
 	var caja_hueso: Rect2i = frag["bbox"]
 	var esc: float = minf(FACTOR_SILUETA * tablero.x / caja_hueso.size.x, FACTOR_SILUETA * tablero.y / caja_hueso.size.y)
 	var tam_sil: Vector2 = Vector2(caja_hueso.size) * esc
@@ -170,7 +170,7 @@ func _preparar_tablero() -> void:
 	silueta.texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR
 	silueta.position = origen
 	silueta.size = tam_sil
-	silueta.modulate = Color(1, 1, 1, 0.20)
+	silueta.modulate = Color(0, 0, 0, 1)
 	silueta.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	_area.add_child(silueta)
 

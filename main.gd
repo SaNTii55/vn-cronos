@@ -232,6 +232,11 @@ func reproducir_dialogo(ruta: String) -> void:
 	bloqueado = escena_especial_activa != null
 
 func _input(event: InputEvent) -> void:
+	# Con una escena especial abierta y la caja de diálogo oculta, el clic pertenece
+	# a sus controles (zonas del laboratorio o minijuegos), no al diálogo principal.
+	if escena_especial_activa != null and not caja_dialogo.visible:
+		return
+
 	if esperando_opcion or bloqueado:
 		return
 
