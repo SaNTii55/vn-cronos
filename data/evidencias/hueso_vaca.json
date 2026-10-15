@@ -4,14 +4,18 @@
 	"laboratorio_guiado": true,
 
 	"id": "hueso_vaca",
-	"nombre": "Hueso de vaca joven",
+	"nombre": "Fragmentos de huesos",
 	"imagen": "res://assets/evidencias/hueso_radio.png",
 
 	"ficha": {
-		"que_es": "Fragmentos de hueso de ganado vacuno hallados en un basural del asentamiento junto a las pirámides de Giza.",
+		"que_es": "Fragmentos de hueso hallados en un basural del asentamiento junto a las pirámides de Giza.",
 		"sabemos": [
 			{
-				"texto": "Es hueso de vaca (ganado vacuno).",
+				"texto": "La pieza reconstruida corresponde a un radio y un cúbito (ulna) de la pata delantera.",
+				"requiere": "reconstruccion"
+			},
+			{
+				"texto": "La muestra corresponde a ganado bovino.",
 				"requiere": "composicion"
 			},
 			{
@@ -19,12 +23,12 @@
 				"requiere": "composicion"
 			},
 			{
-				"texto": "Casi todos los fragmentos son de la pata trasera.",
-				"requiere": "reconstruccion"
+				"texto": "El análisis superficial, por sí solo, no permite determinar qué ocurrió con el hueso.",
+				"requiere": "microscopio"
 			}
 		],
 		"no_sabemos": [
-			"Por qué faltan casi todas las patas delanteras.",
+			"Qué explica que en el basural los restos de patas delanteras sean menos frecuentes que los de patas traseras.",
 			"Qué estatus legal tenían las personas que comieron esta carne."
 		],
 		"nota_historica": "En el basural conocido como Pottery Mound predominan huesos de ganado vacuno joven y los de pata trasera superan a los de pata delantera. El arqueozoólogo Richard Redding propuso que las patas delanteras podían separarse como ofrenda. Es una interpretación de los restos, no un hecho demostrado directamente por los huesos."
@@ -32,10 +36,10 @@
 
 	"afirmaciones": [
 		{
-			"texto": "Es hueso de vaca (ganado vacuno).",
+			"texto": "La muestra corresponde a ganado bovino.",
 			"correcta": "hecho",
 			"requiere": "composicion",
-			"explicacion": "El perfil comparativo de la huella de colágeno coincide mejor con la referencia de ganado vacuno."
+			"explicacion": "El perfil comparativo de la huella de colágeno coincide mejor con la referencia de ganado bovino."
 		},
 		{
 			"texto": "El animal era joven, no adulto.",
@@ -44,10 +48,10 @@
 			"explicacion": "El análisis didáctico del desarrollo óseo apunta a un animal joven. En una investigación real, la estimación dependería también de otros indicadores."
 		},
 		{
-			"texto": "Casi todos los fragmentos son de la pata trasera.",
+			"texto": "La pieza reconstruida corresponde a un radio y un cúbito (ulna) de la pata delantera.",
 			"correcta": "hecho",
 			"requiere": "reconstruccion",
-			"explicacion": "Al organizar los fragmentos se observa que predominan los correspondientes a la pata trasera."
+			"explicacion": "Al organizar los fragmentos se identifica un radio y un cúbito (ulna), huesos del antebrazo de la pata delantera."
 		},
 		{
 			"texto": "Las patas delanteras se separaban para usarlas como ofrenda.",
@@ -70,7 +74,7 @@
 			"instruccion": "Arrastrá cada fragmento a su lugar sobre la silueta. Clic derecho para girarlo.",
 			"imagen": "res://assets/evidencias/hueso_radio.png",
 			"mapa": "res://assets/evidencias/hueso_radio_mapa.png",
-			"lectura": ["Es un radio con su ulna."]
+			"lectura": ["Es un radio y un cúbito (ulna), huesos de la pata delantera."]
 		},
 
 		"composicion": {
@@ -95,7 +99,7 @@
 					],
 					"opciones": [
 						{
-							"nombre": "Vaca (bovino)",
+			"nombre": "Ganado bovino",
 							"valores": [
 								100,
 								0,
@@ -103,7 +107,7 @@
 								100,
 								100
 							],
-							"dato": "El perfil didáctico de la muestra se aproxima más a la referencia de ganado vacuno."
+			"dato": "El perfil didáctico de la muestra se aproxima más a la referencia de ganado bovino."
 						},
 						{
 							"nombre": "Oveja o cabra",
@@ -189,7 +193,7 @@
 		"microscopio": {
 			"util": false,
 			"titulo": "Microscopio",
-			"instruccion": "Mové la lupa sobre el hueso y hacé clic en lo que encuentres.",
+			"instruccion": "Recorré el hueso con la lupa y seleccioná las marcas que encuentres.",
 			"imagen": "res://assets/evidencias/hueso_radio.png",
 			"imagen_marcas": "res://assets/evidencias/hueso_radio_marcas.png",
 			"minimo": 2,

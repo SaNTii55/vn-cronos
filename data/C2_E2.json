@@ -2,13 +2,13 @@
 	"fondo": "res://assets/backgrounds/Laboratorio.png",
 	"siguiente_escena": "",
 	"dialogos": [
-		{ "id": 1, "personaje": "Vera", "expresion": 1, "lado": "izquierda", "texto": "¿Te acordás del fragmento de hueso que te mostré ayer?" },
-		{ "id": 2, "personaje": "Vera", "expresion": 1, "texto": "Bueno, hoy vamos a ver qué podemos averiguar a partir de él." },
+		{ "id": 1, "personaje": "Vera", "expresion": 1, "lado": "izquierda", "texto": "¿Te acordás de los fragmentos de hueso que te mostré ayer?" },
+		{ "id": 2, "personaje": "Vera", "expresion": 1, "texto": "Bueno, hoy vamos a ver qué podemos averiguar a partir de ellos." },
 		{ "id": 3, "personaje": "Vera", "expresion": 1, "texto": "Ah, por cierto, quiero presentarte a alguien." },
 		{ "id": 4, "personaje": "Iris", "expresion": 1, "lado": "derecha", "nombre_oculto": true, "texto": "Buenas. ¿Vos debés ser {nombre}, no?" },
 		{ "id": 5, "personaje": "Iris", "expresion": 1, "nombre_oculto": true, "texto": "Vera ya me había hablado de vos." },
-		{ "id": 6, "personaje": "Iris", "expresion": 15, "lado": "izquierda", "sale": "Vera", "texto": "¡Buenas! Soy Iris. Me dedico al análisis biológico de muestras." },
-		{ "id": 7, "personaje": "Iris", "expresion": 4, "texto": "Mi trabajo es estudiar restos como este para obtener información que no siempre podemos ver a simple vista." },
-		{ "id": 8, "personaje": "Iris", "expresion": 4, "escena_especial": "laboratorio", "texto": "Y para eso tenemos distintas herramientas acá en el laboratorio." }
+		{ "id": 6, "personaje": "Iris", "expresion": 15, "lado": "izquierda", "sale": "Vera", "texto": "Soy Iris. Me especializo en el análisis biológico de restos arqueológicos." },
+		{ "id": 7, "personaje": "Iris", "expresion": 4, "texto": "Estudio lo que esos restos pueden revelarnos, incluso cuando no se aprecia a simple vista." },
+		{ "id": 8, "personaje": "Iris", "expresion": 4, "escena_especial": "laboratorio", "texto": "Para eso usamos distintas herramientas del laboratorio." }
 	]
 }

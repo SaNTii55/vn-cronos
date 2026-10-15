@@ -3,10 +3,10 @@ extends Control
 ## Muestra el fondo del laboratorio (el que ya puso main) con tres zonas clicables, una por estación.
 ## - Modo guiado (la primera evidencia): una sola zona habilitada a la vez, en orden, con pulso.
 ## - Modo libre: las tres zonas habilitadas; el jugador elige el orden y cuándo terminar.
-## Los diálogos (guía y devolución de cada estación) son JSON cortos que se reproducen con
-## main.reproducir_dialogo(). Todos son opcionales: si el archivo no existe, se salta.
-## En el modo guiado, cada estación empieza con su guía (Iris habla, con caja y sprite);
-## cuando termina, caja y sprite desaparecen y recién ahí se ilumina la zona a clicar.
+## Los diálogos de orientación, instrucción y devolución son JSON cortos que se reproducen
+## con main.reproducir_dialogo(). Todos son opcionales: si el archivo no existe, se salta.
+## En el modo guiado, Iris orienta hacia la siguiente estación; al abrirla, explica cómo
+## trabajar con ella y los controles quedan bloqueados hasta que termina de hablar.
 ##
 ## Campos de la línea del JSON que lo abre:
 ##   "id_evidencia": "hueso_vaca"   (opcional, es el valor por defecto)
@@ -36,6 +36,9 @@ const FONDOS_ESTACION := {
 	"reconstruccion": "res://assets/backgrounds/estaciones/Reconstruccion.png",
 }
 const COLOR_FONDO_PROVISORIO := Color(0.20, 0.21, 0.24)
+
+# Duración (en segundos) del difuminado entre el laboratorio y cada minijuego
+const DURACION_FUNDIDO := 0.35
 
 signal _minijuego_cerrado
 
@@ -133,6 +136,7 @@ var _etq_estacion: Label
 var _hud: Control
 var _etq_muestras: Label
 var _boton_terminar: Button
+var _velo: ColorRect   # pantalla negra que se desvanece en las transiciones
 
 
 ## Lo llama main justo después de agregar la escena.
@@ -153,7 +157,6 @@ func iniciar(principal: Node, linea: Dictionary) -> void:
 		return
 
 	_guiado = bool(linea.get("guiado", _ficha.get("laboratorio_guiado", false)))
-	_p.escenario.ocultar_todos()
 	_construir()
 	await _mostrar_hub()
 
@@ -234,6 +237,28 @@ func _construir() -> void:
 	_boton_terminar.offset_top = -110.0
 	_boton_terminar.offset_bottom = -110.0 + UIEstilo.ALTO_BOTON
 
+	# Velo negro para el difuminado. Va en su propia capa, por encima de todo.
+	var capa_velo := CanvasLayer.new()
+	capa_velo.layer = 90
+	add_child(capa_velo)
+	_velo = ColorRect.new()
+	_velo.color = Color.BLACK
+	_velo.modulate.a = 0.0
+	_velo.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	capa_velo.add_child(_velo)
+	_velo.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+
+
+# Pasa a negro (a_negro = true) o vuelve a mostrar la pantalla (a_negro = false).
+# Mientras la pantalla está oscura o en transición, los clics no llegan a nada.
+func _fundido(a_negro: bool) -> void:
+	_velo.mouse_filter = Control.MOUSE_FILTER_STOP
+	var tween := create_tween()
+	tween.tween_property(_velo, "modulate:a", 1.0 if a_negro else 0.0, DURACION_FUNDIDO)
+	await tween.finished
+	if not a_negro:
+		_velo.mouse_filter = Control.MOUSE_FILTER_IGNORE
+
 
 # ---------------------------------------------------------------
 # HUB (la vista con las tres zonas)
@@ -272,6 +297,7 @@ func _mostrar_hub() -> void:
 	var hay_guia: bool = _guiado and sig != "" and not _guia_dicha.has(sig)
 	# Mientras Iris explica no se resalta nada: primero habla, después se ilumina la zona.
 	_actualizar_hub(not hay_guia)
+	_mostrar_controles_hub(false)
 	if _guiado:
 		if sig == "":
 			_terminar()
@@ -280,18 +306,26 @@ func _mostrar_hub() -> void:
 			_guia_dicha[sig] = true
 			_ocupado = true
 			await _reproducir_si_existe([
-				CARPETA_DIALOGOS + "%s_guia_%s.json" % [_id, sig],
-				CARPETA_DIALOGOS + "guia_%s.json" % sig,
-			])
+				CARPETA_DIALOGOS + "lab_%s.json" % sig,
+			], false)
 			_actualizar_hub(true)
+	# Recién ahora se cierra la caja de diálogo (si quedó abierta) y aparecen los controles.
+	await _p.cerrar_dialogo()
+	_mostrar_controles_hub(true)
 	_ocupado = false
+
+
+func _mostrar_controles_hub(mostrar: bool) -> void:
+	for z: Zona in _zonas.values():
+		z.visible = mostrar
+	_hud.visible = mostrar
 
 
 func _poner_modo_estacion(activo: bool, estacion: String) -> void:
 	_capa_estacion.visible = activo
 	for z: Zona in _zonas.values():
-		z.visible = not activo
-	_hud.visible = not activo
+		z.visible = false
+	_hud.visible = false
 	if activo:
 		_etq_estacion.text = str(Evidencias.NOMBRES_ESTACION.get(estacion, estacion))
 		var tex: Texture2D = MinijuegoBase.cargar_textura(str(FONDOS_ESTACION.get(estacion, "")))
@@ -317,19 +351,29 @@ func _on_zona_elegida(estacion: String) -> void:
 
 
 func _hacer_estacion(estacion: String) -> void:
+	# Laboratorio -> estación: se oscurece, se cambia la pantalla y se aclara.
+	await _fundido(true)
 	_poner_modo_estacion(true, estacion)
+	await _fundido(false)
 
 	var resultado: Dictionary = await _jugar(estacion)
 
 	if not resultado.is_empty():
 		Evidencias.registrar_analisis(_id, estacion, resultado)
+
+	# Estación -> laboratorio: _jugar ya dejó la pantalla en negro.
+	_poner_modo_estacion(false, "")
+	await _fundido(false)
+
+	if not resultado.is_empty():
 		var variante: String = _variante(float(resultado.get("calidad", 1.0)))
+		# La caja queda abierta al terminar: si sigue otro diálogo (el del laboratorio),
+		# continúa sin que la caja y el sprite se cierren y vuelvan a aparecer.
 		await _reproducir_si_existe([
 			CARPETA_DIALOGOS + "%s_%s_%s.json" % [_id, estacion, variante],
 			CARPETA_DIALOGOS + "%s_%s.json" % [_id, estacion],
-		])
+		], false)
 
-	_poner_modo_estacion(false, "")
 	await _mostrar_hub()
 
 
@@ -357,10 +401,40 @@ func _jugar(estacion: String) -> Dictionary:
 	mj.configurar(d)
 	mj.terminado.connect(_on_minijuego_terminado)
 	mj.cancelado.connect(_on_minijuego_cancelado)
+	# Evita que el primer panel (p. ej. "Muestra 1 de 2") aparezca
+	# durante un instante antes de que Iris dé las instrucciones.
+	mj.visible = false
 	add_child(mj)
+	mj.bloquear_interaccion(true)
+	await get_tree().process_frame
+	await _reproducir_si_existe([CARPETA_DIALOGOS + "guia_%s.json" % estacion])
+	# El minijuego aparece de a poco, no de golpe.
+	mj.modulate.a = 0.0
+	mj.visible = true
+	mj.create_tween().tween_property(mj, "modulate:a", 1.0, DURACION_FUNDIDO)
+	mj.bloquear_interaccion(false)
+	if mj is MJComposicion:
+		mj.solicitar_dialogo_ronda.connect(_on_composicion_pedir_dialogo.bind(mj))
 	await _minijuego_cerrado
+	# Se oscurece la pantalla antes de sacar el minijuego, para que no haya un corte.
+	await _fundido(true)
 	mj.queue_free()
 	return _ultimo_resultado
+
+
+func _on_composicion_pedir_dialogo(numero: int, mj: MJComposicion) -> void:
+	mj.bloquear_interaccion(true)
+	await _reproducir_si_existe([
+		CARPETA_DIALOGOS + "guia_composicion_ronda_%d.json" % numero,
+	])
+	if not is_instance_valid(mj):
+		return
+	mj.bloquear_interaccion(false)
+	# Un cuadro de espera: así la señal nunca se emite antes de que el
+	# minijuego esté esperándola, aunque el archivo de diálogo no exista.
+	await get_tree().process_frame
+	if is_instance_valid(mj):
+		mj.dialogo_ronda_finalizado.emit()
 
 
 func _on_minijuego_terminado(resultado: Dictionary) -> void:
@@ -383,10 +457,14 @@ func _variante(calidad: float) -> String:
 
 
 # Reproduce el primer JSON de la lista que exista; si no hay ninguno, no hace nada.
-func _reproducir_si_existe(rutas: Array) -> void:
+# Con cerrar_al_final = false la caja queda abierta, para que el diálogo que sigue
+# continúe sin que la caja y el sprite se cierren y vuelvan a aparecer.
+func _reproducir_si_existe(rutas: Array, cerrar_al_final: bool = true) -> void:
 	for ruta: String in rutas:
 		if FileAccess.file_exists(ruta):
 			await _p.reproducir_dialogo(ruta)
+			if cerrar_al_final:
+				await _p.cerrar_dialogo()
 			return
 
 

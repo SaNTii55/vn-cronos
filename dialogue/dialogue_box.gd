@@ -90,3 +90,6 @@ func salir() -> void:
 	tween_panel.tween_property(self, "scale", Vector2.ZERO, 0.4).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_IN)
 	await tween_panel.finished
 	visible = false
+	# Se vacía el texto para que, al volver a entrar, no se vea un instante la línea anterior.
+	label_nombre.text = ""
+	label_texto.text = ""

@@ -153,12 +153,22 @@ func _on_clic(pos_px: Vector2) -> void:
 	_etq_ultimo.text = ""
 
 
+## Hay que encontrar todas las marcas para poder registrar el resultado.
+func _completo() -> bool:
+	return _encontrados.size() >= datos.get("rasgos", []).size()
+
 func _actualizar_estado() -> void:
 	var total: int = datos.get("rasgos", []).size()
-	_etq_estado.text = "Rasgos encontrados: %d de %d" % [_encontrados.size(), total]
-
+	if total > 0 and _completo():
+		_etq_estado.text = "Rasgos encontrados: %d de %d. ¡Completo!" % [_encontrados.size(), total]
+	else:
+		_etq_estado.text = "Rasgos encontrados: %d de %d" % [_encontrados.size(), total]
+	# El botón solo se puede usar con todas las marcas encontradas.
+	_boton.disabled = not _completo()
 
 func _finalizar() -> void:
+	if not _completo():
+		return
 	var rasgos: Array = datos.get("rasgos", [])
 	var lineas: Array = []
 	for i in _encontrados:

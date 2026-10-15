@@ -60,10 +60,28 @@ var mostrar_volver: bool = true
 var _lineas_terminal: bool = false
 var _con_marco: bool = false   # true si se cargó la imagen del marco
 var _vbox_estado: VBoxContainer   # contenido del recuadro de abajo a la derecha
+var _bloqueo_interaccion: Control
 
 
 func configurar(d: Dictionary) -> void:
 	datos = d
+
+
+## Bloquea los controles mientras Iris habla dentro de una estación.
+func bloquear_interaccion(bloquear: bool) -> void:
+	if bloquear:
+		if is_instance_valid(_bloqueo_interaccion):
+			return
+		_bloqueo_interaccion = Control.new()
+		_bloqueo_interaccion.name = "BloqueoInteraccion"
+		_bloqueo_interaccion.mouse_filter = Control.MOUSE_FILTER_STOP
+		_bloqueo_interaccion.focus_mode = Control.FOCUS_NONE
+		add_child(_bloqueo_interaccion)
+		_bloqueo_interaccion.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	else:
+		if is_instance_valid(_bloqueo_interaccion):
+			_bloqueo_interaccion.queue_free()
+			_bloqueo_interaccion = null
 
 
 static func aplicar_paleta(estacion: String) -> void:

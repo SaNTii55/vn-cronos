@@ -1,9 +1,6 @@
 {
 	"dialogos": [
-		{ "id": 1, "personaje": "Iris", "expresion": 1, "lado": "izquierda", "texto": "Bueno, empecemos por lo básico." },
-		{ "id": 2, "personaje": "Iris", "expresion": 4, "texto": "Antes de analizar una muestra, necesitamos saber con qué estamos trabajando." },
-		{ "id": 3, "personaje": "Iris", "expresion": 4, "texto": "Estos fragmentos pertenecen a un mismo hueso, pero están separados. Primero tenemos que reconstruirlo." },
-		{ "id": 4, "personaje": "Iris", "expresion": 14, "texto": "Observá la forma de las piezas y buscá cómo encajan entre sí. No hace falta forzarlas." },
-		{ "id": 5, "personaje": "Iris", "expresion": 1, "texto": "Cuando termines, vamos a poder identificar el hueso y continuar con los análisis." }
+		{ "id": 1, "personaje": "Iris", "expresion": 4, "lado": "izquierda", "texto": "Estos fragmentos pertenecen a un mismo hueso, pero están separados. Tenemos que reconstruirlo." },
+		{ "id": 2, "personaje": "Iris", "expresion": 14, "texto": "Observá su forma y buscá cómo encajan entre sí. No hace falta forzarlos." }
 	]
 }

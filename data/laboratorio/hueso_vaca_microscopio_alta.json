@@ -1,0 +1,6 @@
+{
+	"dialogos": [
+		{ "id": 1, "personaje": "Iris", "expresion": 1, "lado": "izquierda", "texto": "Encontramos varias marcas en la superficie del hueso." },
+		{ "id": 2, "personaje": "Iris", "expresion": 4, "texto": "Pueden orientarnos, pero necesitamos interpretarlas en contexto; por sí solas no nos dicen exactamente qué ocurrió." }
+	]
+}

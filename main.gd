@@ -184,7 +184,7 @@ func _lanzar_escena_especial(linea: Dictionary) -> void:
 		return
 
 	bloqueado = true
-	await caja_dialogo.salir()
+	# La caja no se cierra acá: la escena especial decide cuándo hacerlo (cerrar_dialogo).
 
 	var escena: Node = (load(ruta) as PackedScene).instantiate()
 	escena_especial_activa = escena
@@ -198,12 +198,16 @@ func _lanzar_escena_especial(linea: Dictionary) -> void:
 
 	runner.avanzar_dialogo()
 	if not esperando_opcion and not _saliendo:
-		await caja_dialogo.entrar()
+		if not caja_dialogo.visible:
+			await caja_dialogo.entrar()
 	if not _saliendo:
 		bloqueado = false
 
 # Reproduce un JSON corto de diálogo con el mismo motor y espera a que termine.
 # Lo usan las escenas especiales (guías, devoluciones, etc.).
+# Dentro de una escena especial la caja NO se cierra al terminar: así, si enseguida
+# empieza otro diálogo, continúa sin cerrarse y abrirse de nuevo. La escena especial
+# la cierra cuando hace falta con cerrar_dialogo().
 func reproducir_dialogo(ruta: String) -> void:
 	var sub := DialogueRunner.new()
 	if not sub.cargar_json(ruta) or sub.datos_dialogos.is_empty():
@@ -218,17 +222,33 @@ func reproducir_dialogo(ruta: String) -> void:
 	if sub.fondo != "":
 		_aplicar_fondo(sub.fondo)
 
-	bloqueado = true
-	await caja_dialogo.entrar()
+	if caja_dialogo.visible:
+		# Viene de otro diálogo: la caja ya está abierta y la línea nueva reemplaza a la anterior.
+		sub.iniciar()
+	else:
+		# Se carga la primera línea antes de abrir la caja, así no aparece vacía.
+		bloqueado = true
+		sub.iniciar()
+		await caja_dialogo.entrar()
 	bloqueado = false
-	sub.iniciar()
 	await sub.scene_ended
 
+	if escena_especial_activa == null:
+		bloqueado = true
+		await caja_dialogo.salir()
+		escenario.ocultar_todos()
+	runner = principal
+	# Si hay una escena especial abierta, sigue bloqueado para que ella reciba los clics.
+	bloqueado = escena_especial_activa != null
+
+# Cierra la caja y oculta los sprites. Lo usan las escenas especiales cuando
+# necesitan la pantalla libre (si la caja ya está cerrada, no hace nada).
+func cerrar_dialogo() -> void:
+	if not caja_dialogo.visible:
+		return
 	bloqueado = true
 	await caja_dialogo.salir()
 	escenario.ocultar_todos()
-	runner = principal
-	# Si hay una escena especial abierta, sigue bloqueado para que ella reciba los clics.
 	bloqueado = escena_especial_activa != null
 
 func _input(event: InputEvent) -> void:

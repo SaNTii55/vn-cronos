@@ -9,6 +9,9 @@ extends MinijuegoBase
 
 const MAX_INTENTOS := 2
 
+signal solicitar_dialogo_ronda(numero: int)
+signal dialogo_ronda_finalizado
+
 
 class Grafico extends Control:
 	var valores: Array = []
@@ -161,6 +164,10 @@ func _cerrar_ronda() -> void:
 
 func _siguiente_ronda() -> void:
 	_ronda += 1
+	if _ronda == 1:
+		bloquear_interaccion(true)
+		solicitar_dialogo_ronda.emit(_ronda + 1)
+		await dialogo_ronda_finalizado
 	_mostrar_ronda()
 
 

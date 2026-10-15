@@ -132,11 +132,16 @@ func _construir() -> void:
 
 
 func _preparar_tablero() -> void:
-	# Esperamos a que el panel tenga su tamaño final.
+	# Esperamos a que el panel tenga su tamaño final. Mientras el minijuego está
+	# oculto (por ejemplo, mientras Iris explica) Godot no calcula el tamaño,
+	# así que también esperamos a que sea visible.
 	await get_tree().process_frame
 	await get_tree().process_frame
+	while is_inside_tree() and (not is_visible_in_tree() or _area.size.x < 100.0):
+		await get_tree().process_frame
 	if not is_inside_tree():
 		return
+	await get_tree().process_frame
 
 	var ruta_hueso: String = str(datos.get("imagen", ""))
 	var ruta_mapa: String = str(datos.get("mapa", ""))
