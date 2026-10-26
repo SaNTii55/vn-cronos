@@ -107,6 +107,7 @@ func _empezar() -> void:
 	_iniciando = true
 	GameState.nombre_jugador = "Viajero"
 	GameState.ruta_json_actual = RUTA_INTRO
+	GameState.limpiar_punto()
 	Evidencias.reiniciar_todo()
 	SceneTransition.ir_a(RUTA_JUEGO)
 

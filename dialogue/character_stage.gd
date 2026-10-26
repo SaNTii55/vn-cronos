@@ -3,6 +3,15 @@ extends Control
 
 const CARPETA_PERSONAJES := "res://assets/personajes/"
 
+# --- Animaciones: cambiá estos números a gusto ---
+const ENTRADA_DISTANCIA := 160.0     # desde cuántos píxeles más afuera entra un personaje
+const ENTRADA_DURACION := 0.35       # segundos que tarda en entrar
+const SALIDA_DISTANCIA := 160.0      # cuántos píxeles se desliza hacia afuera al irse
+const SALIDA_DURACION := 0.30        # segundos que tarda en irse
+const DESVANECER_DURACION := 0.20    # cuando se oculta a todos juntos (cierre de la caja, línea centrada)
+const CRUCE_DURACION := 0.45         # segundos que tarda un personaje en cambiar de lado
+# --------------------------------------------------
+
 # Personajes que miran de frente: no se espejan cuando están a la derecha.
 # El resto se supone que mira hacia la derecha, y se espeja al ir del lado derecho.
 const DE_FRENTE := ["archiv"]
@@ -21,6 +30,9 @@ var cache_personajes: Dictionary = {}
 
 # Sprite que está sobre el menú de opciones (mientras el menú está abierto)
 var _sprite_foco: TextureRect = null
+
+# Animación en curso de cada sprite (entrada o cambio de lado)
+var _anims: Dictionary = {}
 
 func _ready() -> void:
 	set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
@@ -47,6 +59,7 @@ func _calcular_posiciones_iniciales() -> void:
 func _crear_sprite() -> TextureRect:
 	var rect := TextureRect.new()
 	rect.size = Vector2(UIEstilo.ANCHO_SPRITE, UIEstilo.ALTO_SPRITE)
+	rect.pivot_offset = rect.size / 2.0   # para el giro al cambiar de lado
 	rect.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
 	rect.visible = false
 	add_child(rect)
@@ -87,20 +100,30 @@ func _lado_de(nombre_personaje: String) -> String:
 		return "derecha"
 	return "izquierda"
 
-# Saca a un personaje de escena (su lado queda libre).
+# Saca a un personaje de escena (su lado queda libre). Se desliza hacia afuera y se desvanece.
 func retirar(nombre_personaje: String) -> void:
 	var clave := nombre_personaje.to_lower()
 	if clave == "":
 		return
 	if personaje_izquierda.to_lower() == clave:
 		personaje_izquierda = ""
-		sprite_izquierda.visible = false
+		_salir(sprite_izquierda, -1.0)
 	elif personaje_derecha.to_lower() == clave:
 		personaje_derecha = ""
-		sprite_derecha.visible = false
-		
+		_salir(sprite_derecha, 1.0)
+
 # Intercambia de lado a los dos personajes (nombres y estado visual de los sprites).
+# Cada personaje cruza al lado opuesto; si cambia de orientación, da un giro al pasar.
 func _intercambiar_lados() -> void:
+	_detener_anim(sprite_izquierda)
+	_detener_anim(sprite_derecha)
+
+	# Dónde se ve hoy cada uno, para que el movimiento arranque desde ahí.
+	var pos_izq: Vector2 = sprite_izquierda.position
+	var pos_der: Vector2 = sprite_derecha.position
+	var flip_izq: bool = sprite_izquierda.flip_h
+	var flip_der: bool = sprite_derecha.flip_h
+
 	var nombre_tmp: String = personaje_izquierda
 	personaje_izquierda = personaje_derecha
 	personaje_derecha = nombre_tmp
@@ -115,6 +138,12 @@ func _intercambiar_lados() -> void:
 	sprite_derecha.visible = vis_tmp
 	sprite_derecha.modulate = mod_tmp
 	_actualizar_orientacion()
+
+	# El que ahora está en el lado izquierdo venía del derecho, y al revés.
+	if sprite_izquierda.visible:
+		_animar_cruce(sprite_izquierda, pos_der, flip_der, sprite_izquierda.flip_h)
+	if sprite_derecha.visible:
+		_animar_cruce(sprite_derecha, pos_izq, flip_izq, sprite_derecha.flip_h)
 
 # Fuerza a un personaje a un lado ("izquierda" o "derecha").
 # Si ya estaba en escena en el otro lado, se pasa al lado pedido (y el otro, al opuesto).
@@ -144,9 +173,12 @@ func _forzar_lado(nombre_personaje: String, lado: String) -> void:
 		personaje_derecha = nombre_personaje
 
 # Los que van a la derecha se espejan para mirar al centro (salvo los de frente).
+# Un sprite que está dando el giro del cambio de lado conserva su orientación hasta terminarlo.
 func _actualizar_orientacion() -> void:
-	sprite_izquierda.flip_h = false
-	sprite_derecha.flip_h = not DE_FRENTE.has(personaje_derecha.to_lower())
+	if not bool(sprite_izquierda.get_meta("girando", false)):
+		sprite_izquierda.flip_h = false
+	if not bool(sprite_derecha.get_meta("girando", false)):
+		sprite_derecha.flip_h = not DE_FRENTE.has(personaje_derecha.to_lower())
 
 # Busca el sprite de un personaje que ya está en escena, sin asignarle lado.
 func _sprite_en_escena(nombre_personaje: String) -> TextureRect:
@@ -186,6 +218,10 @@ func mostrar(nombre_personaje: String, expresion: int, lado_forzado: String = ""
 	atlas.atlas = datos.textura
 	atlas.region = region
 
+	# Si no estaban a la vista, entran con animación.
+	var activo_entra: bool = not activo.visible
+	var inactivo_entra: bool = nombre_del_otro != "" and not inactivo.visible
+
 	activo.visible = true
 	activo.modulate = Color(1, 1, 1, 1)
 	_actualizar_orientacion()
@@ -196,14 +232,107 @@ func mostrar(nombre_personaje: String, expresion: int, lado_forzado: String = ""
 	else:
 		inactivo.visible = false
 
+	# El que habla queda por delante (importa cuando dos se cruzan).
+	move_child(activo, -1)
+
+	if activo_entra:
+		_animar_entrada(activo)
+	if inactivo_entra:
+		_animar_entrada(inactivo)
+
+# Oculta a los dos personajes a la vez (se desvanecen sin moverse).
 func ocultar_todos() -> void:
-	sprite_izquierda.visible = false
-	sprite_derecha.visible = false
+	_salir(sprite_izquierda, 0.0)
+	_salir(sprite_derecha, 0.0)
+
+# ---------------------------------------------------------------
+# ANIMACIONES
+# ---------------------------------------------------------------
+
+func _posicion_lugar(sprite: TextureRect) -> Vector2:
+	return posicion_inicial_derecha if sprite == sprite_derecha else posicion_inicial_izquierda
+
+# Cancela la animación de un sprite y lo deja derecho (sin achatar).
+func _detener_anim(sprite: TextureRect) -> void:
+	if _anims.has(sprite):
+		var t: Tween = _anims[sprite]
+		if t != null and t.is_valid():
+			t.kill()
+		_anims.erase(sprite)
+	sprite.scale = Vector2.ONE
+	sprite.set_meta("girando", false)
+
+# Entra desde el borde de su lado (el izquierdo desde la izquierda, el derecho desde la derecha).
+func _animar_entrada(sprite: TextureRect) -> void:
+	_detener_anim(sprite)
+	var destino: Vector2 = _posicion_lugar(sprite)
+	var hacia_afuera: float = -1.0 if sprite == sprite_izquierda else 1.0
+	sprite.position = destino + Vector2(hacia_afuera * ENTRADA_DISTANCIA, 0.0)
+	var alfa_final: float = sprite.modulate.a
+	sprite.modulate.a = 0.0
+
+	var t := create_tween().set_parallel(true)
+	t.tween_property(sprite, "position", destino, ENTRADA_DURACION).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
+	t.tween_property(sprite, "modulate:a", alfa_final, ENTRADA_DURACION)
+	_anims[sprite] = t
+
+# Cruza desde donde estaba hasta su lugar. Si cambia de orientación, se achata,
+# se espeja a mitad de camino y se vuelve a abrir (un giro "de moneda").
+func _animar_cruce(sprite: TextureRect, desde: Vector2, flip_inicio: bool, flip_final: bool) -> void:
+	_detener_anim(sprite)
+	var destino: Vector2 = _posicion_lugar(sprite)
+	sprite.position = desde
+
+	var t := create_tween().set_parallel(true)
+	t.tween_property(sprite, "position", destino, CRUCE_DURACION).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN_OUT)
+	if flip_inicio != flip_final:
+		var mitad: float = CRUCE_DURACION * 0.5
+		sprite.flip_h = flip_inicio
+		sprite.set_meta("girando", true)
+		t.tween_property(sprite, "scale:x", 0.0, mitad)
+		t.tween_callback(func(): sprite.flip_h = flip_final).set_delay(mitad)
+		t.tween_property(sprite, "scale:x", 1.0, mitad).set_delay(mitad)
+		t.tween_callback(func(): sprite.set_meta("girando", false)).set_delay(CRUCE_DURACION)
+	_anims[sprite] = t
+
+# Saca un sprite de la vista. direccion: -1 = hacia la izquierda, 1 = hacia la derecha,
+# 0 = solo se desvanece. La salida la hace una copia, así el sprite real queda libre
+# enseguida para otro personaje (y no se corta la animación si entra uno nuevo).
+func _salir(sprite: TextureRect, direccion: float) -> void:
+	if sprite.visible:
+		var copia := _crear_copia(sprite)
+		var duracion: float = SALIDA_DURACION if direccion != 0.0 else DESVANECER_DURACION
+		var t := create_tween().set_parallel(true)
+		if direccion != 0.0:
+			t.tween_property(copia, "position:x", copia.position.x + direccion * SALIDA_DISTANCIA, duracion).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN)
+		t.tween_property(copia, "modulate:a", 0.0, duracion)
+		t.chain().tween_callback(copia.queue_free)
+	_detener_anim(sprite)
+	sprite.visible = false
+
+func _crear_copia(sprite: TextureRect) -> TextureRect:
+	var copia := TextureRect.new()
+	copia.stretch_mode = sprite.stretch_mode
+	copia.texture = sprite.texture.duplicate()   # copia propia: el sprite real puede cambiar de región
+	copia.flip_h = sprite.flip_h
+	copia.size = sprite.size
+	copia.pivot_offset = sprite.pivot_offset
+	copia.position = sprite.position
+	copia.scale = sprite.scale
+	copia.modulate = sprite.modulate
+	copia.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	add_child(copia)
+	return copia
 
 # Abre el "modo opciones": el personaje que pregunta sube al centro, apoyado sobre
 # el borde del menú y con colores normales. El otro se desvanece y se oculta.
 func entrar_modo_opciones(nombre_personaje: String, borde_y: float) -> void:
 	_sprite_foco = _sprite_en_escena(nombre_personaje)
+
+	# Si algún personaje todavía se estaba moviendo, se corta esa animación.
+	_detener_anim(sprite_izquierda)
+	_detener_anim(sprite_derecha)
+	_actualizar_orientacion()
 
 	if tween_mover and tween_mover.is_running():
 		tween_mover.kill()

@@ -1,6 +1,0 @@
-{
-	"dialogos": [
-		{ "id": 1, "personaje": "Iris", "expresion": 1, "lado": "izquierda", "texto": "Bien. Ahora vamos a estimar la etapa de desarrollo del animal." },
-		{ "id": 2, "personaje": "Iris", "expresion": 4, "texto": "Compará los indicadores con los perfiles de madurez y elegí el que más se aproxime." }
-	]
-}

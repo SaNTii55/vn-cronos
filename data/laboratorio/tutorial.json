@@ -1,0 +1,44 @@
+{
+	"hub_reconstruccion": {
+		"dialogos": [
+			{ "id": 1, "personaje": "Iris", "expresion": 4, "lado": "izquierda", "texto": "Antes de analizar una muestra, necesitamos saber con qué estamos trabajando." },
+			{ "id": 2, "personaje": "Iris", "expresion": 1, "texto": "La mesa de reconstrucción está en el centro del laboratorio. Empecemos por ahí." }
+		]
+	},
+	"hub_composicion": {
+		"dialogos": [
+			{ "id": 1, "personaje": "Iris", "expresion": 1, "lado": "izquierda", "texto": "Ahora que identificamos la pieza, podemos investigar de qué animal procede." },
+			{ "id": 2, "personaje": "Iris", "expresion": 1, "texto": "Acercate al terminal. Vamos a comparar la muestra con perfiles de referencia." }
+		]
+	},
+	"hub_microscopio": {
+		"dialogos": [
+			{ "id": 1, "personaje": "Iris", "expresion": 1, "lado": "izquierda", "texto": "Ya analizamos la composición de la muestra, pero todavía no sabemos qué ocurrió con el hueso." },
+			{ "id": 2, "personaje": "Iris", "expresion": 4, "texto": "Acercate al microscopio para observar su superficie." }
+		]
+	},
+	"guia_reconstruccion": {
+		"dialogos": [
+			{ "id": 1, "personaje": "Iris", "expresion": 4, "lado": "izquierda", "texto": "Estos fragmentos pertenecen a un mismo hueso, pero están separados. Tenemos que reconstruirlo." },
+			{ "id": 2, "personaje": "Iris", "expresion": 14, "texto": "Observá su forma y buscá cómo encajan entre sí. No hace falta forzarlos." }
+		]
+	},
+	"guia_composicion": {
+		"dialogos": [
+			{ "id": 1, "personaje": "Iris", "expresion": 4, "lado": "izquierda", "texto": "Este terminal compara la huella de colágeno de la muestra con perfiles de referencia almacenados en CRONOS." },
+			{ "id": 2, "personaje": "Iris", "expresion": 1, "texto": "En esta primera comparación vamos a identificar la especie. Elegí el perfil que más se aproxime a la muestra." }
+		]
+	},
+	"guia_composicion_ronda_2": {
+		"dialogos": [
+			{ "id": 1, "personaje": "Iris", "expresion": 1, "lado": "izquierda", "texto": "Bien. Ahora vamos a estimar la etapa de desarrollo del animal." },
+			{ "id": 2, "personaje": "Iris", "expresion": 4, "texto": "Compará los indicadores con los perfiles de madurez y elegí el que más se aproxime." }
+		]
+	},
+	"guia_microscopio": {
+		"dialogos": [
+			{ "id": 1, "personaje": "Iris", "expresion": 4, "lado": "izquierda", "texto": "Las marcas de la superficie son muy sutiles y no se distinguen a simple vista." },
+			{ "id": 2, "personaje": "Iris", "expresion": 1, "texto": "Recorré el hueso con la lupa y marcá las zonas que te llamen la atención para que podamos examinarlas." }
+		]
+	}
+}

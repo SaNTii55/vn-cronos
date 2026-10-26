@@ -1,0 +1,11 @@
+{
+	"fondo": "res://assets/backgrounds/Despacho.png",
+	"siguiente_escena": "res://data/C3_E0.json",
+	"dialogos": [
+		{ "id": 1, "personaje": "Vera", "expresion": 1, "lado": "izquierda", "texto": "¡Ah, ahí estás!" },
+		{ "id": 2, "personaje": "Vera", "expresion": 1, "texto": "¿Qué tal te fue con Iris?" },
+		{ "id": 3, "personaje": "Vera", "expresion": 4, "texto": "Bueno, espero que te haya servido la experiencia de hoy." },
+		{ "id": 4, "personaje": "Vera", "expresion": 4, "texto": "Eso sí, tratá de no olvidarte de todo lo que descubriste." },
+		{ "id": 5, "personaje": "Vera", "expresion": 1, "texto": "Nos vemos mañana. ¡Que descanses!", "fin_de_dia": true }
+	]
+}

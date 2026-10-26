@@ -73,14 +73,15 @@ func resultados(id: String) -> Dictionary:
 
 ## Registra el resultado de una estación y gasta una muestra.
 ## Autoguarda en silencio dentro de la partida.
-func registrar_analisis(id: String, estacion: String, resultado: Dictionary) -> void:
+func registrar_analisis(id: String, estacion: String, resultado: Dictionary, guardar: bool = true) -> void:
 	var estado: Dictionary = _estado_de(id)
 	var analisis: Dictionary = estado["analisis"]
 	if analisis.has(estacion):
 		return
 	analisis[estacion] = resultado
 	estado["muestras"] = maxi(0, int(estado["muestras"]) - 1)
-	GameState.guardar_partida(true)
+	if guardar:
+		GameState.guardar_partida(true)
 	analisis_registrado.emit(id, estacion)
 
 

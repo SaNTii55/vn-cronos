@@ -1,6 +1,0 @@
-{
-	"dialogos": [
-		{ "id": 1, "personaje": "Iris", "expresion": 4, "lado": "izquierda", "texto": "Estos fragmentos pertenecen a un mismo hueso, pero están separados. Tenemos que reconstruirlo." },
-		{ "id": 2, "personaje": "Iris", "expresion": 14, "texto": "Observá su forma y buscá cómo encajan entre sí. No hace falta forzarlos." }
-	]
-}

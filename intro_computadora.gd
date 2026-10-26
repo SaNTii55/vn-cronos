@@ -110,6 +110,7 @@ func _ready():
 	boton_aceptar.pressed.connect(_on_aceptar_pressed)
 	computadora.pressed.connect(_on_computadora_pressed)
 
+	_crear_brillo_computadora()
 # ---------------------------------------------------------------
 # BOTÓN ACEPTAR: usa un recorte de la imagen de la pantalla
 # ---------------------------------------------------------------
@@ -183,6 +184,85 @@ func _on_boton_down() -> void:
 func _on_boton_up() -> void:
 	_boton_presionado = false
 	_actualizar_boton_visual()
+
+# --- Brillo que invita a hacer clic en la computadora ---
+const BRILLO_COLOR := Color(0.45, 0.75, 1.0)   # color del halo (celeste)
+const BRILLO_ALFA_MIN := 0.16                   # intensidad mínima del latido (0 a 1)
+const BRILLO_ALFA_MAX := 0.65                   # intensidad máxima del latido (0 a 1)
+const BRILLO_PERIODO := 3.14                    # segundos que dura cada latido
+const BRILLO_TAMANO := 1.6                      # tamaño del halo respecto al botón
+const BRILLO_RETRASO := 3.0                     # espera a que termine el fundido inicial
+const BRILLO_AJUSTE := Vector2(0, 0)            # para mover el halo (x derecha, y abajo) si no queda centrado
+
+var _brillo: TextureRect
+var _brillo_t: float = 0.0
+var _brillo_hover: float = 0.0
+var _brillo_hover_objetivo: float = 0.0
+
+
+func _crear_brillo_computadora() -> void:
+	var btn: Control = null
+	if has_node("Computadora"):
+		btn = get_node("Computadora")
+	elif has_node("computadora"):
+		btn = get_node("computadora")
+	if btn == null:
+		return
+
+	# Halo redondo que se desvanece hacia los bordes, generado por código (no usa imágenes).
+	var degradado := Gradient.new()
+	degradado.set_color(0, Color(1, 1, 1, 1))
+	degradado.set_color(1, Color(1, 1, 1, 0))
+	var textura := GradientTexture2D.new()
+	textura.gradient = degradado
+	textura.fill = GradientTexture2D.FILL_RADIAL
+	textura.fill_from = Vector2(0.5, 0.5)
+	textura.fill_to = Vector2(1.0, 0.5)
+	textura.width = 256
+	textura.height = 256
+
+	_brillo = TextureRect.new()
+	_brillo.texture = textura
+	_brillo.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+	_brillo.stretch_mode = TextureRect.STRETCH_SCALE
+	_brillo.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	var material_suma := CanvasItemMaterial.new()
+	material_suma.blend_mode = CanvasItemMaterial.BLEND_MODE_ADD   # suma luz, como un resplandor
+	_brillo.material = material_suma
+	_brillo.modulate = Color(BRILLO_COLOR, 0.0)
+
+	# Se coloca justo debajo del botón, para que no tape clics ni el fundido inicial.
+	var padre := btn.get_parent()
+	padre.add_child(_brillo)
+	padre.move_child(_brillo, btn.get_index())
+	var lado: float = maxf(btn.size.x, btn.size.y) * BRILLO_TAMANO
+	_brillo.size = Vector2(lado, lado)
+	_brillo.global_position = btn.global_position + btn.size * 0.5 - _brillo.size * 0.5 + BRILLO_AJUSTE
+
+	btn.mouse_entered.connect(func(): _brillo_hover_objetivo = 1.0)
+	btn.mouse_exited.connect(func(): _brillo_hover_objetivo = 0.0)
+
+
+func _process(delta: float) -> void:
+	if _brillo == null:
+		return
+	_brillo_t += delta
+	_brillo_hover = move_toward(_brillo_hover, _brillo_hover_objetivo, delta * 4.0)
+	var latido: float = 0.5 + 0.5 * sin(_brillo_t * TAU / BRILLO_PERIODO)
+	var alfa: float = lerpf(BRILLO_ALFA_MIN, BRILLO_ALFA_MAX, latido)
+	alfa = minf(1.0, alfa + 0.25 * _brillo_hover)
+	var entrada: float = clampf((_brillo_t - BRILLO_RETRASO) / 1.0, 0.0, 1.0)
+	_brillo.modulate.a = alfa * entrada
+
+
+func _apagar_brillo() -> void:
+	if _brillo == null:
+		return
+	var viejo := _brillo
+	_brillo = null
+	var tween := create_tween()
+	tween.tween_property(viejo, "modulate:a", 0.0, 0.3)
+	tween.tween_callback(viejo.queue_free)
 
 # ---------------------------------------------------------------
 # NOMBRE
@@ -290,6 +370,7 @@ func _on_input_focus_exited():
 		input_nombre.placeholder_text = texto_placeholder
 
 func _on_computadora_pressed() -> void:
+	_apagar_brillo()
 	computadora.visible = false
 	pantalla.pivot_offset = Vector2(0, 0)
 	pantalla.position = Vector2(812, 432)

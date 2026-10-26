@@ -42,12 +42,26 @@ func _ready() -> void:
 	menu_opciones.opcion_elegida.connect(_on_opcion_elegida)
 
 	if runner.cargar_json(GameState.ruta_json_actual):
+		var reanudar_en_escena := false
+		if GameState.punto_valido():
+			runner.opciones_leidas = GameState.punto_lecturas.duplicate(true)
+			if runner.posicionar_en_id(GameState.punto_id):
+				reanudar_en_escena = GameState.punto_en_escena and runner.linea_actual().has("escena_especial")
+				if GameState.punto_en_escena and not reanudar_en_escena:
+					push_warning("El punto guardado no abre una escena especial; se reinicia este diálogo.")
+					GameState.limpiar_punto()
+					runner.cargar_json(GameState.ruta_json_actual)
+			else:
+				GameState.limpiar_punto()
 		_aplicar_fondo(runner.fondo)
 		await SceneTransition.fundir_entrada(DURACION_FUNDIDO)
 		await get_tree().create_timer(PAUSA_TRAS_FUNDIDO).timeout
-		await caja_dialogo.entrar()
-		bloqueado = false
-		runner.iniciar()
+		if reanudar_en_escena:
+			await _lanzar_escena_especial(runner.linea_actual())
+		else:
+			await caja_dialogo.entrar()
+			bloqueado = false
+			runner.iniciar()
 	else:
 		bloqueado = false
 		SceneTransition.fundir_entrada(DURACION_FUNDIDO)
@@ -81,6 +95,14 @@ func _bloquear() -> void:
 func _on_line_ready(linea: Dictionary, id_linea: int) -> void:
 	esperando_opcion = false
 
+	# Guarda el punto y las respuestas ya leídas del diálogo principal.
+	# Las líneas internas de una escena especial no cambian el punto de reanudación.
+	if escena_especial_activa == null:
+		GameState.punto_ruta = GameState.ruta_json_actual
+		GameState.punto_id = id_linea
+		GameState.punto_en_escena = false
+		GameState.punto_lecturas = runner.opciones_leidas.duplicate(true)
+
 	var personaje = str(linea.get("personaje", ""))
 	var centrado = bool(linea.get("centrado", false))
 	var texto = str(linea.get("texto", "")).replace("{nombre}", GameState.nombre_jugador)
@@ -111,6 +133,7 @@ func _on_line_ready(linea: Dictionary, id_linea: int) -> void:
 
 func _guardar_fin_de_dia() -> void:
 	dia_cerrado = true
+	GameState.limpiar_punto()   # el día siguiente empieza desde su primera línea
 	# El punto de guardado pasa a ser el comienzo de lo que sigue (si ya existe).
 	# Solo si es un JSON de diálogo: una escena .tscn no se puede cargar como diálogo (B6).
 	if runner.ruta_siguiente_escena.ends_with(".json"):
@@ -144,6 +167,11 @@ func _on_opcion_elegida(siguiente_id: int, id_decision: int, es_salto: bool) -> 
 	await escenario.salir_modo_opciones()
 
 	runner.elegir(id_decision, siguiente_id, es_salto)
+
+	# Guarda la elección y el punto actualizado, sin mostrar una notificación.
+	if escena_especial_activa == null and not _saliendo:
+		GameState.punto_lecturas = runner.opciones_leidas.duplicate(true)
+		GameState.guardar_partida(true)
 
 	# Si lo que sigue es otra decisión (volver al menú), _on_choices_ready ya puso
 	# esperando_opcion en true y no hay que abrir la caja (B3).

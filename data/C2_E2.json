@@ -1,14 +1,20 @@
 {
 	"fondo": "res://assets/backgrounds/Laboratorio.png",
-	"siguiente_escena": "",
+	"siguiente_escena": "res://data/C2_E3.json",
 	"dialogos": [
 		{ "id": 1, "personaje": "Vera", "expresion": 1, "lado": "izquierda", "texto": "¿Te acordás de los fragmentos de hueso que te mostré ayer?" },
 		{ "id": 2, "personaje": "Vera", "expresion": 1, "texto": "Bueno, hoy vamos a ver qué podemos averiguar a partir de ellos." },
 		{ "id": 3, "personaje": "Vera", "expresion": 1, "texto": "Ah, por cierto, quiero presentarte a alguien." },
 		{ "id": 4, "personaje": "Iris", "expresion": 1, "lado": "derecha", "nombre_oculto": true, "texto": "Buenas. ¿Vos debés ser {nombre}, no?" },
 		{ "id": 5, "personaje": "Iris", "expresion": 1, "nombre_oculto": true, "texto": "Vera ya me había hablado de vos." },
-		{ "id": 6, "personaje": "Iris", "expresion": 15, "lado": "izquierda", "sale": "Vera", "texto": "Soy Iris. Me especializo en el análisis biológico de restos arqueológicos." },
-		{ "id": 7, "personaje": "Iris", "expresion": 4, "texto": "Estudio lo que esos restos pueden revelarnos, incluso cuando no se aprecia a simple vista." },
-		{ "id": 8, "personaje": "Iris", "expresion": 4, "escena_especial": "laboratorio", "texto": "Para eso usamos distintas herramientas del laboratorio." }
+		{ "id": 6, "personaje": "Iris", "expresion": 15, "lado": "izquierda", "texto": "Soy Iris. Me especializo en el análisis biológico de restos arqueológicos." },
+		{ "id": 7, "personaje": "Iris", "expresion": 4, "texto": "Estudio lo que revelan esos restos, incluso lo que no vemos a simple vista." },
+		{ "id": 8, "personaje": "Vera", "expresion": 1, "texto": "Me acabo de acordar de que tengo un par de informes pendientes que debería terminar." },
+		{ "id": 9, "personaje": "Vera", "expresion": 1, "texto": "Así que los dejo trabajar con más tranquilidad. Iris te va a guiar con los análisis." },
+		{ "id": 10, "personaje": "Iris", "expresion": 4, "sale": "Vera", "escena_especial": "laboratorio", "id_cierre_laboratorio": 11, "texto": "Claro. Para eso usamos distintas herramientas del laboratorio." },
+		{ "id": 11, "personaje": "Iris", "expresion": 1, "lado": "izquierda", "texto": "Bueno, con esto ya tenemos los resultados de los análisis." },
+		{ "id": 12, "personaje": "Iris", "expresion": 4, "texto": "Nos van a servir para seguir investigando, aunque todavía quedan cosas por entender." },
+		{ "id": 13, "personaje": "Iris", "expresion": 1, "texto": "Si querés, podés pasar por el despacho. Vera probablemente te esté esperando." },
+		{ "id": 14, "personaje": "Iris", "expresion": 1, "texto": "¡Nos vemos!" }
 	]
 }

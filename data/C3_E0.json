@@ -1,0 +1,7 @@
+{
+	"fondo": "res://assets/backgrounds/Manana.png",
+	"siguiente_escena": "res://data/C3_E1.json",
+	"dialogos": [
+		{ "id": 1, "personaje": "", "centrado": true, "texto": "Al día siguiente..." }
+	]
+}

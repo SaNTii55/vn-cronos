@@ -17,16 +17,8 @@ var decision_pendiente: bool = false
 
 
 func cargar_json(ruta: String) -> bool:
-	if not FileAccess.file_exists(ruta):
-		push_error("No se encontró el archivo de diálogo: " + ruta)
-		return false
-
-	var archivo = FileAccess.open(ruta, FileAccess.READ)
-	var resultado = JSON.parse_string(archivo.get_as_text())
-	archivo.close()
-
-	if not resultado:
-		push_error("JSON inválido en " + ruta)
+	var resultado: Dictionary = _leer_bloque(ruta, true)
+	if resultado.is_empty():
 		return false
 
 	if not resultado.has("dialogos"):
@@ -45,6 +37,55 @@ func cargar_json(ruta: String) -> bool:
 	return true
 
 
+## true si existe el archivo y, cuando la ruta lleva "#clave", también esa clave.
+static func existe(ruta: String) -> bool:
+	return not _leer_bloque(ruta, false).is_empty()
+
+
+## Separa "archivo.json#clave" en [archivo, clave]. Sin "#", la clave queda vacía.
+static func _partir_ruta(ruta: String) -> Array:
+	var pos: int = ruta.find("#")
+	if pos == -1:
+		return [ruta, ""]
+	return [ruta.substr(0, pos), ruta.substr(pos + 1)]
+
+
+## Lee el archivo completo o el bloque identificado por una clave.
+## Devuelve {} si algo falla. Con avisar = true, deja el motivo en la consola.
+static func _leer_bloque(ruta: String, avisar: bool) -> Dictionary:
+	var partes: Array = _partir_ruta(ruta)
+	var ruta_archivo: String = partes[0]
+	var clave: String = partes[1]
+
+	if not FileAccess.file_exists(ruta_archivo):
+		if avisar:
+			push_error("No se encontró el archivo de diálogo: " + ruta_archivo)
+		return {}
+
+	var archivo := FileAccess.open(ruta_archivo, FileAccess.READ)
+	if archivo == null:
+		if avisar:
+			push_error("No se pudo abrir el archivo de diálogo: " + ruta_archivo)
+		return {}
+	var resultado = JSON.parse_string(archivo.get_as_text())
+	archivo.close()
+
+	if typeof(resultado) != TYPE_DICTIONARY:
+		if avisar:
+			push_error("JSON inválido en " + ruta_archivo)
+		return {}
+
+	if clave == "":
+		return resultado
+
+	var bloque = resultado.get(clave)
+	if typeof(bloque) != TYPE_DICTIONARY:
+		if avisar:
+			push_error("No existe la clave '%s' en %s" % [clave, ruta_archivo])
+		return {}
+	return bloque
+
+
 func _reconstruir_mapa_ids() -> void:
 	mapa_ids.clear()
 	for i in range(datos_dialogos.size()):
@@ -55,6 +96,16 @@ func _reconstruir_mapa_ids() -> void:
 
 func iniciar() -> void:
 	mostrar_linea_actual()
+
+
+## Coloca el diálogo en un id guardado sin mostrarlo todavía.
+func posicionar_en_id(id_linea: int) -> bool:
+	if not mapa_ids.has(id_linea):
+		push_error("ID de diálogo no encontrado al reanudar: %d" % id_linea)
+		return false
+	indice_actual = mapa_ids[id_linea]
+	decision_pendiente = false
+	return true
 
 
 func linea_actual() -> Dictionary:
@@ -119,6 +170,11 @@ func mostrar_linea_actual() -> void:
 	var id_linea = int(linea.get("id", 0))
 	decision_pendiente = false
 
+	# Línea lógica: no se muestra. Salta al resultado según las opciones ya leídas.
+	if linea.has("segun_lecturas"):
+		_saltar_segun_lecturas(linea["segun_lecturas"])
+		return
+
 	if linea.get("es_decision", false):
 		var opciones = linea.get("opciones", [])
 		var leidas = opciones_leidas.get(id_linea, [])
@@ -155,4 +211,56 @@ func _emitir_opciones() -> void:
 	var id_decision = int(linea.get("id", indice_actual))
 	var pista = str(linea.get("pista", linea.get("texto", "")))
 	var leidas = opciones_leidas.get(id_decision, [])
-	choices_ready.emit(id_decision, pista, linea.get("opciones", []), leidas)
+
+	# Se muestran solo las opciones que no están ocultas por "oculta_si_leida".
+	var visibles: Array = []
+	for op in linea.get("opciones", []):
+		if not _opcion_oculta(op):
+			visibles.append(op)
+	if visibles.is_empty():
+		push_warning("Todas las opciones de la decisión %d están ocultas; se muestran todas." % id_decision)
+		visibles = linea.get("opciones", [])
+
+	choices_ready.emit(id_decision, pista, visibles, leidas)
+
+
+## Una opción con "oculta_si_leida": 20 no se muestra si la respuesta con id 20
+## ya se leyó, en cualquier decisión de este día. Sirve para ofrecer en una segunda
+## pregunta solo lo que no se eligió en la primera.
+func _opcion_oculta(op) -> bool:
+	if not op.has("oculta_si_leida"):
+		return false
+	var id_leido: int = int(op["oculta_si_leida"])
+	for ids in opciones_leidas.values():
+		if ids.has(id_leido):
+			return true
+	return false
+
+
+## Elige un destino según cuántas opciones de una decisión se leyeron.
+## Se puede indicar "otro" como destino alternativo si el conteo no está enumerado.
+func _saltar_segun_lecturas(regla) -> void:
+	if typeof(regla) != TYPE_DICTIONARY:
+		push_error("'segun_lecturas' tiene que ser un diccionario.")
+		_continuar_tras_error_logico()
+		return
+
+	var id_decision: int = int(regla.get("decision", -1))
+	var leidas: Array = opciones_leidas.get(id_decision, [])
+	var clave: String = str(leidas.size())
+	if not regla.has(clave):
+		clave = "otro"
+	if not regla.has(clave):
+		push_error("'segun_lecturas' no tiene destino para %d lecturas de la decisión %d." % [leidas.size(), id_decision])
+		_continuar_tras_error_logico()
+		return
+	ir_exacto_a_id(regla[clave])
+
+
+# Si una línea lógica está mal configurada, continúa con la siguiente línea.
+func _continuar_tras_error_logico() -> void:
+	if indice_actual >= datos_dialogos.size() - 1:
+		scene_ended.emit(ruta_siguiente_escena)
+		return
+	indice_actual += 1
+	mostrar_linea_actual()

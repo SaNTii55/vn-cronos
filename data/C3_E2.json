@@ -1,0 +1,42 @@
+{
+	"fondo": "res://assets/backgrounds/Investigacion.png",
+	"siguiente_escena": "",
+	"dialogos": [
+		{ "id": 1, "personaje": "Vera", "texto": "Bueno, acá estamos." },
+		{ "id": 2, "personaje": "Vera", "texto": "Ayer estuve bastante ocupada y no pude pasarme por el laboratorio." },
+		{
+			"id": 3,
+			"personaje": "Vera",
+			"texto": "¿Qué tal te fue con Iris? ¿Qué pudieron averiguar?",
+			"es_decision": true,
+			"opciones": [
+				{ "texto": "Identificamos los huesos como un radio y un cúbito.", "siguiente_id": 10 },
+				{ "texto": "Descubrimos que los restos eran de un bovino joven.", "siguiente_id": 20 },
+				{ "texto": "Encontramos varias marcas en la superficie del hueso.", "siguiente_id": 30 }
+			]
+		},
+		{ "id": 10, "personaje": "Vera", "texto": "¡Mirá vos! Al final pudieron reconstruir la pieza." },
+		{ "id": 11, "personaje": "Vera", "texto": "Saber qué huesos tenemos delante ya es un buen punto de partida.", "siguiente_id": 50 },
+		{ "id": 20, "personaje": "Vera", "texto": "¡Ah, pudieron sacar algo en claro del análisis!" },
+		{ "id": 21, "personaje": "Vera", "texto": "Es bueno saber a qué especie pertenecía y en qué etapa del desarrollo estaba.", "siguiente_id": 50 },
+		{ "id": 30, "personaje": "Vera", "texto": "¿Ah, sí? Eso puede ser interesante." },
+		{ "id": 31, "personaje": "Vera", "texto": "Aunque, por lo que me contás, todavía falta averiguar cómo se produjeron.", "siguiente_id": 50 },
+		{ "id": 50, "segun_lecturas": { "decision": 61, "0": 60, "otro": 90 } },
+		{ "id": 60, "personaje": "Vera", "texto": "Bueno, parece que ayer avanzaron bastante con los análisis." },
+		{
+			"id": 61,
+			"personaje": "Vera",
+			"texto": "¿Te acordás de algún otro resultado que hayan obtenido?",
+			"es_decision": true,
+			"opciones": [
+				{ "texto": "Identificamos los huesos como un radio y un cúbito.", "siguiente_id": 10, "oculta_si_leida": 10 },
+				{ "texto": "Descubrimos que los restos eran de un bovino joven.", "siguiente_id": 20, "oculta_si_leida": 20 },
+				{ "texto": "Encontramos varias marcas en la superficie del hueso.", "siguiente_id": 30, "oculta_si_leida": 30 },
+				{ "texto": "No recuerdo nada más.", "siguiente_id": 80 }
+			]
+		},
+		{ "id": 80, "personaje": "Vera", "texto": "Tranqui, no hace falta que recuerdes todo." },
+		{ "id": 81, "personaje": "Vera", "texto": "Para eso estamos acá, para ir registrando lo que descubrimos y poder consultarlo cuando lo necesitemos.", "siguiente_id": 90 },
+		{ "id": 90, "personaje": "Vera", "texto": "[PENDIENTE: acá Vera presenta el dispositivo donde se guardan y consultan las evidencias]" }
+	]
+}

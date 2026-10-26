@@ -1,6 +1,0 @@
-{
-	"dialogos": [
-		{ "id": 1, "personaje": "Iris", "expresion": 4, "lado": "izquierda", "texto": "La muestra se degradó durante las comparaciones y no pudimos obtener un resultado concluyente." },
-		{ "id": 2, "personaje": "Iris", "expresion": 0, "texto": "Por ahora, este análisis no nos permite identificar el animal ni estimar su etapa de desarrollo." }
-	]
-}

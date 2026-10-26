@@ -1,6 +1,0 @@
-{
-	"dialogos": [
-		{ "id": 1, "personaje": "Iris", "expresion": 1, "lado": "izquierda", "texto": "Ya analizamos la composición de la muestra, pero todavía no sabemos qué ocurrió con el hueso." },
-		{ "id": 2, "personaje": "Iris", "expresion": 4, "texto": "Acercate al microscopio para observar su superficie." }
-	]
-}

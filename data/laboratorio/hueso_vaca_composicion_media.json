@@ -1,6 +1,0 @@
-{
-	"dialogos": [
-		{ "id": 1, "personaje": "Iris", "expresion": 4, "lado": "izquierda", "texto": "Obtuvimos información parcial: una de las comparaciones dio un resultado útil." },
-		{ "id": 2, "personaje": "Iris", "expresion": 1, "texto": "Revisemos en la ficha qué conclusiones podemos sostener con los datos disponibles." }
-	]
-}

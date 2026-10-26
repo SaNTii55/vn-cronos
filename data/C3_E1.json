@@ -1,0 +1,46 @@
+{
+	"fondo": "res://assets/backgrounds/Despacho.png",
+	"siguiente_escena": "res://data/C3_E2.json",
+	"dialogos": [
+		{
+			"id": 1,
+			"personaje": "Vera",
+			"expresion": 1,
+			"lado": "izquierda",
+			"texto": "¡Buen día! ¿Cómo arrancamos hoy?",
+			"es_decision": true,
+			"pista": "",
+			"opciones": [
+				{ "texto": "¡Con todo!", "siguiente_id": 10 },
+				{ "texto": "Todavía estoy arrancando.", "siguiente_id": 20 },
+				{ "texto": "¿Qué tenemos para hoy?", "siguiente_id": 30 }
+			]
+		},
+		{
+			"id": 10,
+			"personaje": "Vera",
+			"expresion": 1,
+			"texto": "¡Esa es la actitud!",
+			"siguiente_id": 40
+		},
+		{
+			"id": 20,
+			"personaje": "Vera",
+			"expresion": 4,
+			"texto": "Jajaja, tranqui. Todavía estamos a tiempo.",
+			"siguiente_id": 40
+		},
+		{
+			"id": 30,
+			"personaje": "Vera",
+			"expresion": 1,
+			"texto": "Ya veo que viniste a lo importante.",
+			"siguiente_id": 40
+		},
+		{ "id": 40, "personaje": "Vera", "expresion": 0, "texto": "Yo todavía estoy tratando de ponerme al día con unas cuantas cosas." },
+		{ "id": 41, "personaje": "Vera", "expresion": 2, "texto": "Parece que el trabajo se reproduce cuando una no mira." },
+		{ "id": 42, "personaje": "Vera", "expresion": 1, "texto": "Pero bueno, por algún lado hay que empezar." },
+		{ "id": 43, "personaje": "Vera", "expresion": 1, "texto": "¿Qué te parece si vamos al área de investigación?" },
+		{ "id": 44, "personaje": "Vera", "expresion": 1, "texto": "Quiero ver cómo viene todo por ahí." }
+	]
+}

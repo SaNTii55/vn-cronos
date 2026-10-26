@@ -3,8 +3,10 @@ extends Control
 ## Muestra el fondo del laboratorio (el que ya puso main) con tres zonas clicables, una por estación.
 ## - Modo guiado (la primera evidencia): una sola zona habilitada a la vez, en orden, con pulso.
 ## - Modo libre: las tres zonas habilitadas; el jugador elige el orden y cuándo terminar.
-## Los diálogos de orientación, instrucción y devolución son JSON cortos que se reproducen
-## con main.reproducir_dialogo(). Todos son opcionales: si el archivo no existe, se salta.
+## Los diálogos de orientación, instrucción y devolución se agrupan en JSON por claves
+## y se reproducen con main.reproducir_dialogo(). Todos son opcionales: si faltan, se salta.
+##   data/laboratorio/tutorial.json: hub_<estacion>, guia_<estacion>, guia_composicion_ronda_<n>
+##   data/laboratorio/<id_evidencia>_dialogos.json: <estacion>_<alta|media|baja> o <estacion>
 ## En el modo guiado, Iris orienta hacia la siguiente estación; al abrirla, explica cómo
 ## trabajar con ella y los controles quedan bloqueados hasta que termina de hablar.
 ##
@@ -16,12 +18,12 @@ signal terminada
 
 const ID_EVIDENCIA_DEFECTO := "hueso_vaca"
 const CARPETA_DIALOGOS := "res://data/laboratorio/"
+const ARCHIVO_TUTORIAL := CARPETA_DIALOGOS + "tutorial.json"
 
 # Orden del modo guiado
 const ORDEN_GUIADO := ["reconstruccion", "composicion", "microscopio"]
 
-# Zonas clicables sobre el fondo, en fracciones de la pantalla (0 a 1):
-# Rect2(x, y, ancho, alto). Ajustalas a ojo; con DEPURAR = true se dibujan siempre.
+# Rectángulos de respaldo si falta map.png, expresados como fracciones de pantalla.
 const ZONAS := {
 	"reconstruccion": Rect2(0.41, 0.42, 0.255, 0.36), # camilla central con los brazos robóticos
 	"composicion": Rect2(0.19, 0.56, 0.22, 0.27),     # terminal con la plaqueta que brilla (izquierda)
@@ -48,13 +50,25 @@ class Zona extends Control:
 
 	const CIAN := Color(0.30, 0.85, 0.95)
 	const VERDE := Color(0.45, 0.85, 0.50)
+	const COLOR_MASCARA := {
+		"reconstruccion": Color8(0, 218, 243),
+		"composicion": Color8(0, 242, 121),
+		"microscopio": Color8(255, 180, 51),
+	}
+	const VECINOS := [Vector2i(-1, 0), Vector2i(1, 0), Vector2i(0, -1), Vector2i(0, 1)]
 
 	var estacion: String = ""
 	var titulo: String = ""
+	var zona_respaldo: Rect2 = Rect2(0, 0, 0, 0)
 	var estado: String = "libre"   # libre, guiada, bloqueada, hecha
 	var depurar: bool = false
 	var _hover: bool = false
 	var _pulso: float = 0.0
+	var _imagen_mapa: Image
+	var _textura_relleno: Texture2D
+	var _textura_borde: Texture2D
+	var _color_acento: Color = CIAN
+	var _pos_etiqueta: Vector2 = Vector2(8, 8)
 
 	func _ready() -> void:
 		mouse_filter = Control.MOUSE_FILTER_STOP
@@ -68,6 +82,68 @@ class Zona extends Control:
 		var activa: bool = estado == "libre" or estado == "guiada"
 		mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND if activa else Control.CURSOR_ARROW
 		queue_redraw()
+
+	func configurar_mascara(imagen: Image) -> void:
+		_imagen_mapa = imagen
+		_color_acento = COLOR_MASCARA.get(estacion, CIAN)
+		if _imagen_mapa == null:
+			return
+		var relleno := Image.create(imagen.get_width(), imagen.get_height(), false, Image.FORMAT_RGBA8)
+		var borde := Image.create(imagen.get_width(), imagen.get_height(), false, Image.FORMAT_RGBA8)
+		var min_x: int = imagen.get_width()
+		var min_y: int = imagen.get_height()
+		var max_x: int = -1
+		var max_y: int = -1
+		for y in range(imagen.get_height()):
+			for x in range(imagen.get_width()):
+				var pixel := imagen.get_pixel(x, y)
+				if not _es_color_mascara(pixel):
+					continue
+				min_x = mini(min_x, x)
+				min_y = mini(min_y, y)
+				max_x = maxi(max_x, x)
+				max_y = maxi(max_y, y)
+				relleno.set_pixel(x, y, Color(1, 1, 1, pixel.a))
+				var es_borde: bool = false
+				for desplazamiento: Vector2i in VECINOS:
+					var vecino: Vector2i = Vector2i(x, y) + desplazamiento
+					if vecino.x < 0 or vecino.y < 0 or vecino.x >= imagen.get_width() or vecino.y >= imagen.get_height():
+						es_borde = true
+						break
+					if not _es_color_mascara(imagen.get_pixelv(vecino)):
+						es_borde = true
+						break
+				if es_borde:
+					borde.set_pixel(x, y, Color(1, 1, 1, pixel.a))
+		if max_x >= min_x and max_y >= min_y:
+			_pos_etiqueta = Vector2(min_x + 8, maxf(8.0, min_y - 48.0))
+		_textura_relleno = ImageTexture.create_from_image(relleno)
+		_textura_borde = ImageTexture.create_from_image(borde)
+
+	func _es_color_mascara(pixel: Color) -> bool:
+		if pixel.a <= 0.05:
+			return false
+		match estacion:
+			"reconstruccion":
+				return pixel.r < 0.20 and pixel.g > 0.60 and pixel.b > 0.65
+			"composicion":
+				return pixel.r < 0.20 and pixel.g > 0.65 and pixel.b < 0.65
+			"microscopio":
+				return pixel.r > 0.65 and pixel.g > 0.30 and pixel.b < 0.50
+		return false
+
+	func _has_point(point: Vector2) -> bool:
+		if _imagen_mapa == null:
+			var fraccion := Vector2(point.x / maxf(size.x, 1.0), point.y / maxf(size.y, 1.0))
+			return zona_respaldo.has_point(fraccion)
+		else:
+			var punto_pantalla: Vector2 = get_global_transform_with_canvas() * point
+			var tam_vista: Vector2 = get_viewport_rect().size
+			if tam_vista.x <= 0.0 or tam_vista.y <= 0.0:
+				return false
+			var x: int = clampi(int(punto_pantalla.x / tam_vista.x * _imagen_mapa.get_width()), 0, _imagen_mapa.get_width() - 1)
+			var y: int = clampi(int(punto_pantalla.y / tam_vista.y * _imagen_mapa.get_height()), 0, _imagen_mapa.get_height() - 1)
+			return _es_color_mascara(_imagen_mapa.get_pixel(x, y))
 
 	func _on_entrar() -> void:
 		_hover = true
@@ -88,41 +164,60 @@ class Zona extends Control:
 				elegida.emit(estacion)
 
 	func _draw() -> void:
-		var r := Rect2(Vector2.ZERO, size)
+		var area := Rect2(Vector2.ZERO, size)
+		var relleno_activo: float = 0.0
+		var borde_activo: float = 0.0
+		var texto_etiqueta := ""
 		match estado:
 			"guiada":
-				var a: float = 0.5 + 0.5 * sin(_pulso * 4.0)
-				draw_rect(r, Color(CIAN, 0.08 + 0.14 * a), true)
-				draw_rect(r, Color(CIAN, 0.55 + 0.45 * a), false, 4.0)
-				_etiqueta(titulo, CIAN)
+				var a: float = 0.5 + 0.5 * sin(_pulso * 2.0)
+				relleno_activo = 0.14 + 0.20 * a
+				borde_activo = 0.65 + 0.35 * a
+				texto_etiqueta = titulo
 			"libre":
 				if _hover:
-					draw_rect(r, Color(CIAN, 0.20), true)
-					draw_rect(r, Color(CIAN, 1.0), false, 4.0)
-					_etiqueta(titulo, CIAN)
+					relleno_activo = 0.12
+					borde_activo = 1.0
+					texto_etiqueta = titulo
 				else:
-					draw_rect(r, Color(CIAN, 0.28), false, 2.0)
+					borde_activo = 0.22
 			"hecha":
-				draw_rect(r, Color(VERDE, 0.40), false, 3.0)
-				_etiqueta(titulo + "  (hecho)", VERDE)
+				relleno_activo = 0.035
+				borde_activo = 0.5
+				texto_etiqueta = titulo + "  (hecho)"
+		if _textura_relleno != null and relleno_activo > 0.0:
+			draw_texture_rect(_textura_relleno, area, false, Color(_color_acento, relleno_activo))
+		if _textura_borde != null and borde_activo > 0.0:
+			draw_texture_rect(_textura_borde, area, false, Color(_color_acento, borde_activo))
+		if _imagen_mapa == null and borde_activo > 0.0:
+			draw_rect(Rect2(zona_respaldo.position * size, zona_respaldo.size * size), Color(_color_acento, borde_activo), false, 4.0)
+		if texto_etiqueta != "":
+			_etiqueta(texto_etiqueta, VERDE if estado == "hecha" else _color_acento)
 		if depurar:
-			draw_rect(r, Color(1, 1, 0, 0.9), false, 2.0)
+			draw_rect(Rect2(Vector2.ZERO, size), Color(1, 1, 0, 0.9), false, 2.0)
 			_etiqueta(estacion, Color(1, 1, 0))
 
 	func _etiqueta(texto: String, color: Color) -> void:
 		var fuente: Font = get_theme_default_font()
 		var tam: int = 30
 		var ancho: float = fuente.get_string_size(texto, HORIZONTAL_ALIGNMENT_LEFT, -1, tam).x
-		var caja := Rect2(8, 8, ancho + 24, tam + 16)
+		var tam_mapa := Vector2(1024.0, 572.0)
+		if _imagen_mapa != null:
+			tam_mapa = Vector2(_imagen_mapa.get_width(), _imagen_mapa.get_height())
+		var escala := size / tam_mapa
+		var pos := _pos_etiqueta * escala
+		var caja := Rect2(pos.x, pos.y, ancho + 24, tam + 16)
 		draw_rect(caja, Color(0.05, 0.07, 0.12, 0.88), true)
 		draw_rect(caja, color, false, 2.0)
-		draw_string(fuente, Vector2(20, 8 + tam + 1), texto, HORIZONTAL_ALIGNMENT_LEFT, -1, tam, Color(0.95, 0.95, 0.98))
+		draw_string(fuente, Vector2(pos.x + 12, pos.y + tam + 1), texto, HORIZONTAL_ALIGNMENT_LEFT, -1, tam, Color(0.95, 0.95, 0.98))
 
 
 var _p: Node
 var _id: String = ""
 var _ficha: Dictionary = {}
 var _guiado: bool = false
+var _id_linea_reanudacion: int = 0
+var _id_cierre_laboratorio: int = 0
 var _ocupado: bool = true
 var _termino: bool = false
 var _guia_dicha: Dictionary = {}
@@ -143,6 +238,8 @@ var _velo: ColorRect   # pantalla negra que se desvanece en las transiciones
 func iniciar(principal: Node, linea: Dictionary) -> void:
 	_p = principal
 	_id = str(linea.get("id_evidencia", ID_EVIDENCIA_DEFECTO))
+	_id_linea_reanudacion = int(linea.get("id", 0))
+	_id_cierre_laboratorio = int(linea.get("id_cierre_laboratorio", 0))
 	_ficha = Evidencias.ficha(_id)
 
 	set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
@@ -166,6 +263,11 @@ func iniciar(principal: Node, linea: Dictionary) -> void:
 # ---------------------------------------------------------------
 
 func _construir() -> void:
+	var textura_mapa := load("res://map.png") as Texture2D
+	var imagen_mapa: Image = textura_mapa.get_image() if textura_mapa != null else null
+	if imagen_mapa == null:
+		push_warning("No se pudo cargar res://map.png; las zonas del laboratorio usarán su rectángulo.")
+
 	# Fondo de estación (arriba de todo lo demás del laboratorio, abajo de los minijuegos)
 	_capa_estacion = Control.new()
 	_capa_estacion.mouse_filter = Control.MOUSE_FILTER_STOP
@@ -194,20 +296,14 @@ func _construir() -> void:
 
 	# Zonas clicables
 	for estacion: String in ZONAS:
-		var r: Rect2 = ZONAS[estacion]
 		var z := Zona.new()
 		z.estacion = estacion
 		z.titulo = str(Evidencias.NOMBRES_ESTACION.get(estacion, estacion))
+		z.zona_respaldo = ZONAS[estacion]
 		z.depurar = DEPURAR
+		z.configurar_mascara(imagen_mapa)
 		add_child(z)
-		z.anchor_left = r.position.x
-		z.anchor_top = r.position.y
-		z.anchor_right = r.end.x
-		z.anchor_bottom = r.end.y
-		z.offset_left = 0.0
-		z.offset_top = 0.0
-		z.offset_right = 0.0
-		z.offset_bottom = 0.0
+		z.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 		z.elegida.connect(_on_zona_elegida)
 		_zonas[estacion] = z
 
@@ -306,7 +402,7 @@ func _mostrar_hub() -> void:
 			_guia_dicha[sig] = true
 			_ocupado = true
 			await _reproducir_si_existe([
-				CARPETA_DIALOGOS + "lab_%s.json" % sig,
+				ARCHIVO_TUTORIAL + "#hub_%s" % sig,
 			], false)
 			_actualizar_hub(true)
 	# Recién ahora se cierra la caja de diálogo (si quedó abierta) y aparecen los controles.
@@ -359,7 +455,9 @@ func _hacer_estacion(estacion: String) -> void:
 	var resultado: Dictionary = await _jugar(estacion)
 
 	if not resultado.is_empty():
-		Evidencias.registrar_analisis(_id, estacion, resultado)
+		# El guardado se hace después del diálogo de resultado, junto con el punto,
+		# para que una salida durante ese diálogo no salte sus conclusiones.
+		Evidencias.registrar_analisis(_id, estacion, resultado, false)
 
 	# Estación -> laboratorio: _jugar ya dejó la pantalla en negro.
 	_poner_modo_estacion(false, "")
@@ -367,14 +465,35 @@ func _hacer_estacion(estacion: String) -> void:
 
 	if not resultado.is_empty():
 		var variante: String = _variante(float(resultado.get("calidad", 1.0)))
+		var archivo_evidencia: String = CARPETA_DIALOGOS + _id + "_dialogos.json"
 		# La caja queda abierta al terminar: si sigue otro diálogo (el del laboratorio),
 		# continúa sin que la caja y el sprite se cierren y vuelvan a aparecer.
 		await _reproducir_si_existe([
-			CARPETA_DIALOGOS + "%s_%s_%s.json" % [_id, estacion, variante],
-			CARPETA_DIALOGOS + "%s_%s.json" % [_id, estacion],
+			archivo_evidencia + "#%s_%s" % [estacion, variante],
+			archivo_evidencia + "#%s" % estacion,
 		], false)
+		_guardar_punto_control()
+	else:
+		GameState.guardar_partida(true)
 
 	await _mostrar_hub()
+
+
+func _guardar_punto_control() -> void:
+	if not _guiado or _id_linea_reanudacion == 0:
+		GameState.guardar_partida(true)
+		return
+
+	# Si quedan pruebas, se retoma la línea que abre esta escena especial.
+	# Tras la última, se retoma el diálogo que sigue al laboratorio.
+	GameState.punto_ruta = GameState.ruta_json_actual
+	if _siguiente_guiada() == "" and _id_cierre_laboratorio != 0:
+		GameState.punto_id = _id_cierre_laboratorio
+		GameState.punto_en_escena = false
+	else:
+		GameState.punto_id = _id_linea_reanudacion
+		GameState.punto_en_escena = true
+	GameState.guardar_partida(true)
 
 
 func _jugar(estacion: String) -> Dictionary:
@@ -407,7 +526,7 @@ func _jugar(estacion: String) -> Dictionary:
 	add_child(mj)
 	mj.bloquear_interaccion(true)
 	await get_tree().process_frame
-	await _reproducir_si_existe([CARPETA_DIALOGOS + "guia_%s.json" % estacion])
+	await _reproducir_si_existe([ARCHIVO_TUTORIAL + "#guia_%s" % estacion])
 	# El minijuego aparece de a poco, no de golpe.
 	mj.modulate.a = 0.0
 	mj.visible = true
@@ -425,7 +544,7 @@ func _jugar(estacion: String) -> Dictionary:
 func _on_composicion_pedir_dialogo(numero: int, mj: MJComposicion) -> void:
 	mj.bloquear_interaccion(true)
 	await _reproducir_si_existe([
-		CARPETA_DIALOGOS + "guia_composicion_ronda_%d.json" % numero,
+		ARCHIVO_TUTORIAL + "#guia_composicion_ronda_%d" % numero,
 	])
 	if not is_instance_valid(mj):
 		return
@@ -456,12 +575,12 @@ func _variante(calidad: float) -> String:
 	return "baja"
 
 
-# Reproduce el primer JSON de la lista que exista; si no hay ninguno, no hace nada.
+# Reproduce el primer diálogo de la lista que exista; cada ruta puede incluir "#clave".
 # Con cerrar_al_final = false la caja queda abierta, para que el diálogo que sigue
 # continúe sin que la caja y el sprite se cierren y vuelvan a aparecer.
 func _reproducir_si_existe(rutas: Array, cerrar_al_final: bool = true) -> void:
 	for ruta: String in rutas:
-		if FileAccess.file_exists(ruta):
+		if DialogueRunner.existe(ruta):
 			await _p.reproducir_dialogo(ruta)
 			if cerrar_al_final:
 				await _p.cerrar_dialogo()

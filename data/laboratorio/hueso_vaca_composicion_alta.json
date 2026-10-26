@@ -1,6 +1,0 @@
-{
-	"dialogos": [
-		{ "id": 1, "personaje": "Iris", "expresion": 1, "lado": "izquierda", "texto": "El perfil de la muestra se aproxima al de ganado bovino." },
-		{ "id": 2, "personaje": "Iris", "expresion": 4, "texto": "Los indicadores apuntan a un animal joven, aunque esta es una estimación didáctica." }
-	]
-}

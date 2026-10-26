@@ -1,0 +1,43 @@
+{
+	"reconstruccion": {
+		"dialogos": [
+			{ "id": 1, "personaje": "Iris", "expresion": 1, "lado": "izquierda", "texto": "Bien. La pieza reconstruida corresponde a un radio y un cúbito (ulna), huesos de la pata delantera." }
+		]
+	},
+	"composicion_alta": {
+		"dialogos": [
+			{ "id": 1, "personaje": "Iris", "expresion": 1, "lado": "izquierda", "texto": "El perfil de la muestra se aproxima al de ganado bovino." },
+			{ "id": 2, "personaje": "Iris", "expresion": 4, "texto": "Los indicadores apuntan a un animal joven, aunque esta es una estimación didáctica." }
+		]
+	},
+	"composicion_media": {
+		"dialogos": [
+			{ "id": 1, "personaje": "Iris", "expresion": 4, "lado": "izquierda", "texto": "Obtuvimos información parcial: una de las comparaciones dio un resultado útil." },
+			{ "id": 2, "personaje": "Iris", "expresion": 1, "texto": "Revisemos en la ficha qué conclusiones podemos sostener con los datos disponibles." }
+		]
+	},
+	"composicion_baja": {
+		"dialogos": [
+			{ "id": 1, "personaje": "Iris", "expresion": 4, "lado": "izquierda", "texto": "La muestra se degradó durante las comparaciones y no pudimos obtener un resultado concluyente." },
+			{ "id": 2, "personaje": "Iris", "expresion": 0, "texto": "Por ahora, este análisis no nos permite identificar el animal ni estimar su etapa de desarrollo." }
+		]
+	},
+	"microscopio_alta": {
+		"dialogos": [
+			{ "id": 1, "personaje": "Iris", "expresion": 1, "lado": "izquierda", "texto": "Encontramos varias marcas en la superficie del hueso." },
+			{ "id": 2, "personaje": "Iris", "expresion": 4, "texto": "Pueden orientarnos, pero necesitamos interpretarlas en contexto; por sí solas no nos dicen exactamente qué ocurrió." }
+		]
+	},
+	"microscopio_media": {
+		"dialogos": [
+			{ "id": 1, "personaje": "Iris", "expresion": 1, "lado": "izquierda", "texto": "Encontramos algunas marcas en la superficie del hueso." },
+			{ "id": 2, "personaje": "Iris", "expresion": 4, "texto": "Pueden orientarnos, pero necesitamos interpretarlas en contexto; por sí solas no nos dicen exactamente qué ocurrió." }
+		]
+	},
+	"microscopio_baja": {
+		"dialogos": [
+			{ "id": 1, "personaje": "Iris", "expresion": 4, "lado": "izquierda", "texto": "La observación no nos dio información suficiente para interpretar la superficie con seguridad." },
+			{ "id": 2, "personaje": "Iris", "expresion": 0, "texto": "Una marca aislada no alcanza para saber exactamente qué ocurrió con el hueso." }
+		]
+	}
+}

@@ -1,6 +1,0 @@
-{
-	"dialogos": [
-		{ "id": 1, "personaje": "Iris", "expresion": 1, "lado": "izquierda", "texto": "Ahora que conocemos la pieza, podemos investigar de qué animal procede." },
-		{ "id": 2, "personaje": "Iris", "expresion": 1, "texto": "Acercate al terminal de composición. Vamos a comparar la muestra con perfiles de referencia." }
-	]
-}

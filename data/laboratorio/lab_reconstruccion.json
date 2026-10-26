@@ -1,6 +1,0 @@
-{
-	"dialogos": [
-		{ "id": 1, "personaje": "Iris", "expresion": 4, "lado": "izquierda", "texto": "Antes de analizar una muestra, necesitamos saber con qué estamos trabajando." },
-		{ "id": 2, "personaje": "Iris", "expresion": 1, "texto": "La mesa de reconstrucción está en el centro del laboratorio. Empecemos por ahí." }
-	]
-}

@@ -11,7 +11,7 @@
 		"que_es": "Fragmentos de hueso hallados en un basural del asentamiento junto a las pirámides de Giza.",
 		"sabemos": [
 			{
-				"texto": "La pieza reconstruida corresponde a un radio y un cúbito (ulna) de la pata delantera.",
+				"texto": "La pieza reconstruida corresponde a un radio y un cúbito de una pata delantera.",
 				"requiere": "reconstruccion"
 			},
 			{
@@ -199,22 +199,22 @@
 			"minimo": 2,
 			"rasgos": [
 				{
-					"nombre": "Marcas de corte",
+					"nombre": "Tres marcas juntas",
 					"pos": [0.20, 0.19],
 					"radio": 0.06,
-					"dato": "Hay marcas finas compatibles con el uso de una herramienta afilada. Su interpretación depende del contexto y de descartar otras causas."
+					"dato": "Tres surcos alargados, próximos entre sí y con una orientación similar"
 				},
 				{
-					"nombre": "Estrías",
+					"nombre": "Zona erosionada",
 					"pos": [0.79, 0.72],
 					"radio": 0.08,
-					"dato": "La superficie presenta estrías. Para interpretarlas habría que examinar su forma y distribución."
+					"dato": "La superficie presenta irregularidades y pérdida de material. Los bordes son menos definidos que los de los surcos"
 				},
 				{
-					"nombre": "Zona pulida",
+					"nombre": "Marca en V",
 					"pos": [0.30, 0.38],
 					"radio": 0.06,
-					"dato": "Hay una zona pulida que podría deberse a manipulación o desgaste."
+					"dato": "Un surco estrecho, con bordes definidos y un fondo que se estrecha"
 				}
 			],
 			"conclusion": "Las marcas superficiales necesitan interpretarse en contexto. Por sí solas no identifican quién manipuló el hueso ni cuál era su estatus social."

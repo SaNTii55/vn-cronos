@@ -1,6 +1,0 @@
-{
-	"dialogos": [
-		{ "id": 1, "personaje": "Iris", "expresion": 4, "lado": "izquierda", "texto": "La observación no nos dio información suficiente para interpretar la superficie con seguridad." },
-		{ "id": 2, "personaje": "Iris", "expresion": 0, "texto": "Una marca aislada no alcanza para saber exactamente qué ocurrió con el hueso." }
-	]
-}

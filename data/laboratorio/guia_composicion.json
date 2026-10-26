@@ -1,6 +1,0 @@
-{
-	"dialogos": [
-		{ "id": 1, "personaje": "Iris", "expresion": 4, "lado": "izquierda", "texto": "Este terminal compara la huella de colágeno de la muestra con perfiles de referencia almacenados en CRONOS." },
-		{ "id": 2, "personaje": "Iris", "expresion": 1, "texto": "En esta primera comparación vamos a identificar la especie. Elegí el perfil que más se aproxime a la muestra." }
-	]
-}
